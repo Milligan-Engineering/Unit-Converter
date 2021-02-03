@@ -24,7 +24,9 @@ int main()
     if (typeUnit == 3) { cout << "joules, calories, foot-pounds \n"; }
     cin >> OriginalUnit;
     cout << "What is your preferred unit? (Type exactly as shown below and then press return)\n";
-    cout << "meters, feet, miles, cubic meters, liters, gallons, joules, calories, foot-pounds\n";
+    if (typeUnit == 1) { cout << "meters, feet, miles \n"; }
+    if (typeUnit == 2) { cout << "cubic meters, liters, gallons \n"; }
+    if (typeUnit == 3) { cout << "joules, calories, foot-pounds \n"; }
     cin >> ConvertedUnit;
     cout << "You are converting from" << " " << OriginalUnit << " to " << ConvertedUnit << "\n";
     cout << "Is this correct? (Type yes or no and then press return)\n";
