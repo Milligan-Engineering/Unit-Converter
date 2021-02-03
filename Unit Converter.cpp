@@ -35,7 +35,6 @@ int main()
     cin >> originalValue;
     finalValue = 3.2808399 * originalValue;
     cout << originalValue << " " << OriginalUnit << " is equivalent to " << finalValue << " " << ConvertedUnit << "\n";
-    cout << "Thank you for using the Unit Converter!";
-   
+    cout << "Thank you for using the Unit Converter!\n" << "Come back anytime. \n";
 
 }
