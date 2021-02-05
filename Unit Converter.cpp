@@ -7,7 +7,8 @@ using namespace std;
 
 int typeUnit;
 double originalValue, finalValue;
-string OriginalUnit, ConvertedUnit, Confirmation;
+string OriginalUnit, ConvertedUnit; 
+bool confirmation;
 
 int main()
 {
@@ -29,8 +30,8 @@ int main()
     if (typeUnit == 3) { cout << "joules, calories, foot-pounds \n"; }
     cin >> ConvertedUnit;
     cout << "You are converting from" << " " << OriginalUnit << " to " << ConvertedUnit << "\n";
-    cout << "Is this correct? (Type yes or no and then press return)\n";
-    cin >> Confirmation;
+    cout << "Is this correct? (Type 1 for yes or 0 for no and then press return)\n";
+    cin >> confirmation;
     cout << "What is the value of your original measurement? (Enter and then press return)\n";
     cin >> originalValue;
     finalValue = 3.2808399 * originalValue;
