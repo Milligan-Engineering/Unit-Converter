@@ -241,4 +241,5 @@ int main()
     while (again == true);
     cout << "Have a great day! Come back anytime. \n";
 
+    return 0;
 }
