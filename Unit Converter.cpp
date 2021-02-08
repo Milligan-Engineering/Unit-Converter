@@ -5,7 +5,7 @@
 #include <string>
 using namespace std;
 
-int typeUnit, originalUnit, convertedUnit;
+int typeUnit, originalUnit, convertedUnit, decimalPlace;
 double originalValue, finalValue, conversion; 
 bool confirmation, again;
 
@@ -17,11 +17,17 @@ int main()
     cout << "Unit Converter\n";
     do
     {
+        cout << "How many decimal places do you want in your conversion? (Enter number and then press return) \n";
+        cin >> decimalPlace;
+        cout.setf(ios::fixed);
+        cout.setf(ios::showpoint);
+        cout.precision(decimalPlace);
         do
         {
             cout << "What is your unit type? (Type the corresponding number and then press return)\n";
             cout << "1. length\n" << "2. volume \n" << "3. energy\n";
             cin >> typeUnit;
+
             cout << "What is your original unit? (Type the corresponding number and then press return)\n";
             if (typeUnit == 1)
                 cout << "1. meters\n" << "2. feet\n" << "3. miles\n";
@@ -30,6 +36,7 @@ int main()
             if (typeUnit == 3)
                 cout << "1. joules\n" << "2. calories\n" << "3. foot-pounds \n";
             cin >> originalUnit;
+
             cout << "What is your preferred unit? (Type the corresponding number and then press return)\n";
             if (typeUnit == 1)
                 cout << "1. meters\n" << "2. feet\n" << "3. miles \n";
@@ -38,6 +45,7 @@ int main()
             if (typeUnit == 3)
                 cout << "1. joules\n" << "2. calories\n" << "3. foot-pounds \n";
             cin >> convertedUnit;
+
             if ((typeUnit == 1) && (originalUnit == 1) && (convertedUnit == 2))
                 cout << "You are converting from meters to feet.\n";
             if ((typeUnit == 1) && (originalUnit == 1) && (convertedUnit == 3))
@@ -92,13 +100,18 @@ int main()
                 cout << "You are converting between the same unit (calories).\n";
             if ((typeUnit == 3) && (originalUnit == 3) && (convertedUnit == 3))
                 cout << "You are converting between the same unit (foot-pounds).\n";
+
             cout << "Is this correct? (Type 1 for yes or 0 for no and then press return)\n";
             cin >> confirmation;
             if (confirmation == false)
                 cout << "Let's try again. \n";
+            else
+                cout << "Great! Let's continue.\n";
         } while (confirmation == false);
+
         cout << "What is the value of your original measurement? (Enter and then press return)\n";
         cin >> originalValue;
+
         if ((typeUnit == 1) && (originalUnit == 1) && (convertedUnit == 2))
         {
             finalValue = originalValue * 3.2808399;
@@ -234,12 +247,16 @@ int main()
             finalValue = originalValue;
             cout << originalValue << " foot-pounds is equivalent to " << finalValue << " foot-pounds.\n";
         }
+
         cout << "Thank you for using the Unit Converter!\n";
         cout << "Would you like to convert another measurement? (Type 1 for yes or 0 for no and then press return\n";
         cin >> again;
+        if (again == true)
+            cout << "Let's start at the beginning. \n";
+        else
+            cout << "Have a great day! Come back anytime. \n";
     }
     while (again == true);
-    cout << "Have a great day! Come back anytime. \n";
 
     return 0;
 }
