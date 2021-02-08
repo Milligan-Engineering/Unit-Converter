@@ -19,6 +19,8 @@ int main()
     {
         cout << "How many decimal places do you want in your conversion? (Enter number and then press return) \n";
         cin >> decimalPlace;
+        decimalPlace++;
+        cout << "You are going to have " << decimalPlace << " decimal places for rounding accuracy. \n";
         cout.setf(ios::fixed);
         cout.setf(ios::showpoint);
         cout.precision(decimalPlace);
