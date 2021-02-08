@@ -24,6 +24,7 @@ int main()
         cout.setf(ios::fixed);
         cout.setf(ios::showpoint);
         cout.precision(decimalPlace);
+
         do
         {
             cout << "What is your unit type? (Type the corresponding number and then press return)\n";
