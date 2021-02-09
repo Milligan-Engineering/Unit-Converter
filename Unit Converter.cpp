@@ -257,11 +257,11 @@ int main(){
         cin >> again;
         if (again == true)
             cout << "Let's start at the beginning. \n";
-        else
-            cout << "Have a great day! Come back anytime. \n";
     }
     while (again == true);
     // This loops back to line 39 to completely restart the program.
+
+    cout << "Have a great day! Come back anytime. \n";
 
     return 0;
 }
