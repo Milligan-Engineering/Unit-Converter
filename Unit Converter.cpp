@@ -2,7 +2,8 @@
 // Author: Rachel Scheffer
 // Email Address: rnscheffer@my.milligan.edu
 // Description: Program to convert measurements between units.
-// Last Changed: February 8, 2021
+// Assignment: Term Project
+// Last Changed: February 10, 2021
 
 #include <iostream>
 #include <string>
@@ -133,7 +134,7 @@ int main(){
                 cout << "Great! Let's continue.\n";
         } 
         while (confirmation == false);
-        // This loops back to line 49 to input the units again.
+        // This loops back to line 50 to input the units again.
 
         cout << "What is the value of your original measurement? (Enter and then press return)\n";
         cin >> originalValue;
@@ -259,7 +260,7 @@ int main(){
             cout << "Let's start at the beginning. \n";
     }
     while (again == true);
-    // This loops back to line 39 to completely restart the program.
+    // This loops back to line 40 to completely restart the program.
 
     cout << "Have a great day! Come back anytime. \n";
 
