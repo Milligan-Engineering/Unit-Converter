@@ -1,7 +1,7 @@
 // File name: Unit Converter.cpp
 // Author: Rachel Scheffer
 // Email Address: rnscheffer@my.milligan.edu
-// Description: Program to convert measurements.
+// Description: Program to convert measurements between units.
 // Last Changed: February 8, 2021
 
 #include <iostream>
