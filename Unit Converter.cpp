@@ -9,8 +9,9 @@
 #include <string>
 using namespace std;
 
+string Name;
 int typeUnit, originalUnit, convertedUnit, decimalPlace;
-double originalValue, finalValue, conversion; 
+double originalValue, finalValue; 
 bool confirmation, again;
 const double METERS_TO_FEET = 3.2808399;
 const double METERS_TO_MILES = 0.00062137;
@@ -34,11 +35,13 @@ const double FOOT_POUNDS_TO_CALORIES = 0.32404827;
 int main(){
 
     cout << "Unit Converter\n";
+    cout << "What is your name? (Enter your name and then press return) \n";
+    cin >> Name;
 
     // This do-while statement allows the program to start over
     // if the user so chooses to convert another measurement. 
     do {
-        cout << "How many decimal places do you want in your conversion? (Enter a number between 1 and 10 and then press return) \n";
+        cout << Name << ", how many decimal places do you want in your conversion? (Enter a number between 1 and 10 and then press return) \n";
         cin >> decimalPlace;
         decimalPlace++;
         cout << "You are going to have " << decimalPlace << " decimal places for rounding accuracy. \n";
@@ -54,20 +57,20 @@ int main(){
             cin >> typeUnit;
 
             cout << "What is your original unit? (Type the corresponding number and then press return)\n";
-            if (typeUnit == 1) 
+            if (typeUnit == 1) //length
                 cout << "1. meters\n" << "2. feet\n" << "3. miles\n";
-            else if (typeUnit == 2) 
+            else if (typeUnit == 2) //volume
                 cout << "1. cubic meters\n" << "2. liters\n" << "3. gallons \n";
-            else 
+            else //if (typeUnit == 3), energy
                 cout << "1. joules\n" << "2. calories\n" << "3. foot-pounds \n";
             cin >> originalUnit;
 
             cout << "What is your converted unit? (Type the corresponding number and then press return)\n";
-            if (typeUnit == 1)
+            if (typeUnit == 1) //length
                 cout << "1. meters\n" << "2. feet\n" << "3. miles \n";
-            else if (typeUnit == 2)
+            else if (typeUnit == 2) //volume
                 cout << "1. cubic meters\n" << "2. liters\n" << "3. gallons \n";
-            else
+            else //if (typeUnit == 3), energy
                 cout << "1. joules\n" << "2. calories\n" << "3. foot-pounds \n";
             cin >> convertedUnit;
 
@@ -123,7 +126,7 @@ int main(){
                 cout << "You are converting between the same unit (joules).\n";
             else if ((typeUnit == 3) && (originalUnit == 2) && (convertedUnit == 2))
                 cout << "You are converting between the same unit (calories).\n";
-            else
+            else //if ((typeUnit == 3) && (originalUnit == 3) && (convertedUnit == 3))
                 cout << "You are converting between the same unit (foot-pounds).\n";
 
             cout << "Is this correct? (Type 1 for yes or 0 for no and then press return)\n";
@@ -134,7 +137,7 @@ int main(){
                 cout << "Great! Let's continue.\n";
         } 
         while (confirmation == false);
-        // This loops back to line 50 to input the units again.
+        // This loops back to line 53 to input the units again.
 
         cout << "What is the value of your original measurement? (Enter and then press return)\n";
         cin >> originalValue;
@@ -248,21 +251,21 @@ int main(){
             finalValue = originalValue;
             cout << originalValue << " calories is equivalent to " << finalValue << " calories.\n";
         }
-        else{
+        else{ //if ((typeUnit == 3) && (originalUnit == 3) && (convertedUnit == 3))
             finalValue = originalValue;
             cout << originalValue << " foot-pounds is equivalent to " << finalValue << " foot-pounds.\n";
         }
 
-        cout << "Thank you for using the Unit Converter!\n";
+        cout << Name << ", thank you for using the Unit Converter!\n";
         cout << "Would you like to convert another measurement? (Type 1 for yes or 0 for no and then press return\n";
         cin >> again;
         if (again == true)
             cout << "Let's start at the beginning. \n";
     }
     while (again == true);
-    // This loops back to line 40 to completely restart the program.
+    // This loops back to line 43 to completely restart the program.
 
-    cout << "Have a great day! Come back anytime. \n";
+    cout << "Have a great day, " << Name << "! Come back anytime. \n";
 
     return 0;
 }
