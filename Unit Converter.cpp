@@ -33,11 +33,14 @@ int main(){
     // This do-while statement allows the program to start over
     // if the user so chooses to convert another measurement. 
     do {
-        cout << "\n" << Name << ", how many decimal places do you want in your conversion? (Enter a number between 0 and 10 and then press return) \n";
+        cout << "\n" << Name << ", how many decimal places do you want in your conversion? (Enter a number between 0 and 9 and then press return) \n";
         cin >> decimalPlace;
 
         for (decimalPlace; decimalPlace < 0; decimalPlace = decimalPlace * -1)
             cout << "Cannot have negative decimal places, changed to positive.\n";
+        if (decimalPlace > 9)
+            cout << "You cannot request more than 9 decimal places.\n";
+        for (decimalPlace; decimalPlace > 9; decimalPlace--);
 
         cout << "Added one for rounding accuracy.\n";
         decimalPlace++;
