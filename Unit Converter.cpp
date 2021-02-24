@@ -3,7 +3,7 @@
 // Email Address: rnscheffer@my.milligan.edu
 // Description: Program to convert measurements between units.
 // Assignment: Term Project
-// Last Changed: February 23, 2021
+// Last Changed: February 24, 2021
 
 #include <iostream>
 #include <string>
@@ -30,15 +30,14 @@ int main()
         cout << "\n" << Name << ", how many decimal places do you want in your conversion? (Enter a number between 0 and 9 and then press return) \n";
         cin >> decimalPlace;
 
-        for (decimalPlace; decimalPlace < 0; decimalPlace = decimalPlace * -1)
+        for (decimalPlace; decimalPlace < 0; decimalPlace = abs(decimalPlace))
             cout << "Cannot have negative decimal places, changed to positive.\n";
         if (decimalPlace > 9)
             cout << "You cannot request more than 9 decimal places.\n";
         for (decimalPlace; decimalPlace > 9; decimalPlace--);
 
         cout << "Added one for rounding accuracy.\n";
-        decimalPlace++;
-        cout << "You are going to have " << decimalPlace << " decimal places. \n\n";
+        cout << "You are going to have " << ++decimalPlace << " decimal places. \n\n";
         cout.setf(ios::fixed);
         cout.setf(ios::showpoint);
         cout.precision(decimalPlace);
@@ -158,7 +157,7 @@ int main()
                 cout << "Great! Let's continue.\n";
         } 
         while (confirmation == false);
-        // This loops back to line 47 to input the units again.
+        // This loops back to line 46 to input the units again.
 
         cout << "\nWhat is the value of your original measurement? (Enter and then press return)\n";
         cin >> originalValue;
@@ -170,10 +169,6 @@ int main()
         // Volume Units: 1 = cubic meters, 2 = liters, 3 = gallons
         // Energy Units: 1 = joules, 2 = calories, 3 = foot-pounds
 
-        if (originalValue < 0) {
-            cout << "Changed to a positive value.\n";
-            originalValue = fabs(originalValue);
-        }
         finalValue = originalValue * conversion[typeUnit - 1][unit[0] - 1][unit[1] - 1];
 
         if ((typeUnit == 1) && (unit[0] == 1) && (unit[1] == 2))
