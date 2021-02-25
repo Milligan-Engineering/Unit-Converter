@@ -11,7 +11,7 @@
 using namespace std;
 
 string Name;
-int unit[1];
+int unit[1]; int unitInfo(int typeUnitPar, int originalUnitPar, int convertedUnitPar);
 int decimalPlace, typeUnit;
 double originalValue, finalValue; 
 bool confirmation, again;
@@ -94,59 +94,59 @@ int main()
 
             cout << "\n";
 
-            if ((typeUnit == 1) && (unit[0] == 1) && (unit[1] == 2))
+            if (unitInfo(typeUnit, unit[0], unit[1]) == 112)
                 cout << "You are converting from meters to feet.\n";
-            else if ((typeUnit == 1) && (unit[0] == 1) && (unit[1] == 3))
+            else if (unitInfo(typeUnit, unit[0], unit[1]) == 113)
                 cout << "You are converting from meters to miles.\n";
-            else if ((typeUnit == 1) && (unit[0] == 2) && (unit[1] == 1))
+            else if (unitInfo(typeUnit, unit[0], unit[1]) == 121)
                 cout << "You are converting from feet to meters.\n";
-            else if ((typeUnit == 1) && (unit[0] == 2) && (unit[1] == 3))
+            else if (unitInfo(typeUnit, unit[0], unit[1]) == 123)
                 cout << "You are converting from feet to miles.\n";
-            else if ((typeUnit == 1) && (unit[0] == 3) && (unit[1] == 1))
+            else if (unitInfo(typeUnit, unit[0], unit[1]) == 131)
                 cout << "You are converting from miles to meters.\n";
-            else if ((typeUnit == 1) && (unit[0] == 3) && (unit[1] == 2))
+            else if (unitInfo(typeUnit, unit[0], unit[1]) == 132)
                 cout << "You are converting from miles to feet.\n";
-            else if ((typeUnit == 2) && (unit[0] == 1) && (unit[1] == 2))
+            else if (unitInfo(typeUnit, unit[0], unit[1]) == 212)
                 cout << "You are converting from cubic meters to liters.\n";
-            else if ((typeUnit == 2) && (unit[0] == 1) && (unit[1] == 3))
+            else if (unitInfo(typeUnit, unit[0], unit[1]) == 213)
                 cout << "You are converting from cubic meters to gallons.\n";
-            else if ((typeUnit == 2) && (unit[0] == 2) && (unit[1] == 1))
+            else if (unitInfo(typeUnit, unit[0], unit[1]) == 221)
                 cout << "You are converting from liters to cubic meters.\n";
-            else if ((typeUnit == 2) && (unit[0] == 2) && (unit[1] == 3))
+            else if (unitInfo(typeUnit, unit[0], unit[1]) == 223)
                 cout << "You are converting from liters to gallons.\n";
-            else if ((typeUnit == 2) && (unit[0] == 3) && (unit[1] == 1))
+            else if (unitInfo(typeUnit, unit[0], unit[1]) == 231)
                 cout << "You are converting from gallons to cubic meters.\n";
-            else if ((typeUnit == 2) && (unit[0] == 3) && (unit[1] == 2))
+            else if (unitInfo(typeUnit, unit[0], unit[1]) == 232)
                 cout << "You are converting from gallons to liters.\n";
-            else if ((typeUnit == 3) && (unit[0] == 1) && (unit[1] == 2))
+            else if (unitInfo(typeUnit, unit[0], unit[1]) == 312)
                 cout << "You are converting from joules to calories.\n";
-            else if ((typeUnit == 3) && (unit[0] == 1) && (unit[1] == 3))
+            else if (unitInfo(typeUnit, unit[0], unit[1]) == 313)
                 cout << "You are converting from joules to foot-pounds.\n";
-            else if ((typeUnit == 3) && (unit[0] == 2) && (unit[1] == 1))
+            else if (unitInfo(typeUnit, unit[0], unit[1]) == 321)
                 cout << "You are converting from calories to joules.\n";
-            else if ((typeUnit == 3) && (unit[0] == 2) && (unit[1] == 3))
+            else if (unitInfo(typeUnit, unit[0], unit[1]) == 323)
                 cout << "You are converting from calories to foot-pounds.\n";
-            else if ((typeUnit == 3) && (unit[0] == 3) && (unit[1] == 1))
+            else if (unitInfo(typeUnit, unit[0], unit[1]) == 331)
                 cout << "You are converting from foot-pounds to joules.\n";
-            else if ((typeUnit == 3) && (unit[0] == 3) && (unit[1] == 2))
+            else if (unitInfo(typeUnit, unit[0], unit[1]) == 332)
                 cout << "You are converting from foot-pounds to calories.\n";
-            else if ((typeUnit == 1) && (unit[0] == 1) && (unit[1] == 1))
+            else if (unitInfo(typeUnit, unit[0], unit[1]) == 111)
                 cout << "You are converting between the same unit (meters).\n";
-            else if ((typeUnit == 1) && (unit[0] == 2) && (unit[1] == 2))
+            else if (unitInfo(typeUnit, unit[0], unit[1]) == 122)
                 cout << "You are converting between the same unit (feet).\n";
-            else if ((typeUnit == 1) && (unit[0] == 3) && (unit[1] == 3))
+            else if (unitInfo(typeUnit, unit[0], unit[1]) == 133)
                 cout << "You are converting between the same unit (miles).\n";
-            else if ((typeUnit == 2) && (unit[0] == 1) && (unit[1] == 1))
+            else if (unitInfo(typeUnit, unit[0], unit[1]) == 211)
                 cout << "You are converting between the same unit (cubic meters).\n";
-            else if ((typeUnit == 2) && (unit[0] == 2) && (unit[1] == 2))
+            else if (unitInfo(typeUnit, unit[0], unit[1]) == 222)
                 cout << "You are converting between the same unit (liters).\n";
-            else if ((typeUnit == 2) && (unit[0] == 3) && (unit[1] == 3))
+            else if (unitInfo(typeUnit, unit[0], unit[1]) == 233)
                 cout << "You are converting between the same unit (gallons).\n";
-            else  if ((typeUnit == 3) && (unit[0] == 1) && (unit[1] == 1))
+            else  if (unitInfo(typeUnit, unit[0], unit[1]) == 311)
                 cout << "You are converting between the same unit (joules).\n";
-            else if ((typeUnit == 3) && (unit[0] == 2) && (unit[1] == 2))
+            else if (unitInfo(typeUnit, unit[0], unit[1]) == 322)
                 cout << "You are converting between the same unit (calories).\n";
-            else //if ((typeUnit == 3) && (unit[0] == 3) && (unit[1] == 3))
+            else //if (unitInfo(typeUnit, unit[0], unit[1]) == 333)
                 cout << "You are converting between the same unit (foot-pounds).\n";
 
             cout << "Is this correct? (Type 1 for yes or 0 for no and then press return)\n";
@@ -171,59 +171,59 @@ int main()
 
         finalValue = originalValue * conversion[typeUnit - 1][unit[0] - 1][unit[1] - 1];
 
-        if ((typeUnit == 1) && (unit[0] == 1) && (unit[1] == 2))
+        if (unitInfo(typeUnit, unit[0], unit[1]) == 112)
             cout << originalValue << " meters is equivalent to " << finalValue << " feet.\n";
-        else if ((typeUnit == 1) && (unit[0] == 1) && (unit[1] == 3))
+        else if (unitInfo(typeUnit, unit[0], unit[1]) == 113)
             cout << originalValue << " meters is equivalent to " << finalValue << " miles.\n";
-        else if ((typeUnit == 1) && (unit[0] == 2) && (unit[1] == 1))
+        else if (unitInfo(typeUnit, unit[0], unit[1]) == 121)
             cout << originalValue << " feet is equivalent to " << finalValue << " meters.\n";
-        else if ((typeUnit == 1) && (unit[0] == 2) && (unit[1] == 3))
+        else if (unitInfo(typeUnit, unit[0], unit[1]) == 123)
             cout << originalValue << " feet is equivalent to " << finalValue << " miles.\n";
-        else if ((typeUnit == 1) && (unit[0] == 3) && (unit[1] == 1))
+        else if (unitInfo(typeUnit, unit[0], unit[1]) == 131)
             cout << originalValue << " miles is equivalent to " << finalValue << " meters.\n";
-        else if ((typeUnit == 1) && (unit[0] == 3) && (unit[1] == 2))
+        else if (unitInfo(typeUnit, unit[0], unit[1]) == 132)
             cout << originalValue << " miles is equivalent to " << finalValue << " feet.\n";
-        else if ((typeUnit == 2) && (unit[0] == 1) && (unit[1] == 2))
+        else if (unitInfo(typeUnit, unit[0], unit[1]) == 212)
             cout << originalValue << " cubic meters is equivalent to " << finalValue << " liters.\n";
-        else if ((typeUnit == 2) && (unit[0] == 1) && (unit[1] == 3))
+        else if (unitInfo(typeUnit, unit[0], unit[1]) == 213)
             cout << originalValue << " cubic meters is equivalent to " << finalValue << " gallons.\n";
-        else if ((typeUnit == 2) && (unit[0] == 2) && (unit[1] == 1))
+        else if (unitInfo(typeUnit, unit[0], unit[1]) == 221)
             cout << originalValue << " liters is equivalent to " << finalValue << " cubic meters.\n";
-        else if ((typeUnit == 2) && (unit[0] == 2) && (unit[1] == 3))
+        else if (unitInfo(typeUnit, unit[0], unit[1]) == 223)
             cout << originalValue << " liters is equivalent to " << finalValue << " gallons.\n";
-        else if ((typeUnit == 2) && (unit[0] == 3) && (unit[1] == 1))
+        else if (unitInfo(typeUnit, unit[0], unit[1]) == 231)
             cout << originalValue << " gallons is equivalent to " << finalValue << " cubic meters.\n";
-        else if ((typeUnit == 2) && (unit[0] == 3) && (unit[1] == 2))
+        else if (unitInfo(typeUnit, unit[0], unit[1]) == 232)
             cout << originalValue << " gallons is equivalent to " << finalValue << " liters.\n";
-        else if ((typeUnit == 3) && (unit[0] == 1) && (unit[1] == 2))
+        else if (unitInfo(typeUnit, unit[0], unit[1]) == 312)
             cout << originalValue << " joules is equivalent to " << finalValue << " calories.\n";
-        else if ((typeUnit == 3) && (unit[0] == 1) && (unit[1] == 3))
+        else if (unitInfo(typeUnit, unit[0], unit[1]) == 313)
             cout << originalValue << " joules is equivalent to " << finalValue << " foot-pounds.\n";
-        else if ((typeUnit == 3) && (unit[0] == 2) && (unit[1] == 1))
+        else if (unitInfo(typeUnit, unit[0], unit[1]) == 321)
             cout << originalValue << " calories is equivalent to " << finalValue << " joules.\n";
-        else if ((typeUnit == 3) && (unit[0] == 2) && (unit[1] == 3))
+        else if (unitInfo(typeUnit, unit[0], unit[1]) == 323)
             cout << originalValue << " calories is equivalent to " << finalValue << " foot-pounds.\n";
-        else if ((typeUnit == 3) && (unit[0] == 3) && (unit[1] == 1))
+        else if (unitInfo(typeUnit, unit[0], unit[1]) == 331)
             cout << originalValue << " foot-pounds is equivalent to " << finalValue << " joules.\n";
-        else if ((typeUnit == 3) && (unit[0] == 3) && (unit[1] == 2))
+        else if (unitInfo(typeUnit, unit[0], unit[1]) == 332)
             cout << originalValue << " foot-pounds is equivalent to " << finalValue << " calories.\n";
-        else if ((typeUnit == 1) && (unit[0] == 1) && (unit[1] == 1))
+        else if (unitInfo(typeUnit, unit[0], unit[1]) == 111)
             cout << originalValue << " meters is equivalent to " << finalValue << " meters.\n";
-        else if ((typeUnit == 1) && (unit[0] == 2) && (unit[1] == 2))
+        else if (unitInfo(typeUnit, unit[0], unit[1]) == 122)
             cout << originalValue << " feet is equivalent to " << finalValue << " feet.\n";
-        else if ((typeUnit == 1) && (unit[0] == 3) && (unit[1] == 3))
+        else if (unitInfo(typeUnit, unit[0], unit[1]) == 133)
             cout << originalValue << " miles is equivalent to " << finalValue << " miles.\n";
-        else if ((typeUnit == 2) && (unit[0] == 1) && (unit[1] == 1))
+        else if (unitInfo(typeUnit, unit[0], unit[1]) == 211)
             cout << originalValue << " cubic meters is equivalent to " << finalValue << " cubic meters.\n";
-        else if ((typeUnit == 2) && (unit[0] == 2) && (unit[1] == 2))
+        else if (unitInfo(typeUnit, unit[0], unit[1]) == 222)
             cout << originalValue << " liters is equivalent to " << finalValue << " liters.\n";
-        else if ((typeUnit == 2) && (unit[0] == 3) && (unit[1] == 3))
+        else if (unitInfo(typeUnit, unit[0], unit[1]) == 233)
             cout << originalValue << " gallons is equivalent to " << finalValue << " gallons.\n";
-        else if ((typeUnit == 3) && (unit[0] == 1) && (unit[1] == 1))
+        else if (unitInfo(typeUnit, unit[0], unit[1]) == 311)
             cout << originalValue << " joules is equivalent to " << finalValue << " joules.\n";
-        else if ((typeUnit == 3) && (unit[0] == 2) && (unit[1] == 2))
+        else if (unitInfo(typeUnit, unit[0], unit[1]) == 322)
             cout << originalValue << " calories is equivalent to " << finalValue << " calories.\n";
-        else //if ((typeUnit == 3) && (unit[0] == 3) && (unit[1] == 3))
+        else //if (unitInfo(typeUnit, unit[0], unit[1]) == 333)
             cout << originalValue << " foot-pounds is equivalent to " << finalValue << " foot-pounds.\n";
 
         cout << "\n" << Name << ", thank you for using the Unit Converter!\n";
@@ -238,4 +238,12 @@ int main()
     cout << "\nHave a great day, " << Name << "! Come back anytime. \n";
 
     return 0;
+}
+
+int unitInfo(int typeUnitPar, int originalUnitPar, int convertedUnitPar) {
+    int typeBase, originalBase;
+
+    typeBase = 100 * typeUnitPar;
+    originalBase = 10 * originalUnitPar;
+    return (typeBase + originalBase + convertedUnitPar);
 }
