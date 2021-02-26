@@ -3,7 +3,7 @@
 // Email Address: rnscheffer@my.milligan.edu
 // Description: Program to convert measurements between units.
 // Assignment: Term Project
-// Last Changed: February 24, 2021
+// Last Changed: February 26, 2021
 
 #include <iostream>
 #include <string>
@@ -241,9 +241,10 @@ int main()
 }
 
 int unitInfo(int typeUnitPar, int originalUnitPar, int convertedUnitPar) {
-    int typeBase, originalBase;
+    int typeBase, originalBase, totalInfo;
 
     typeBase = 100 * typeUnitPar;
     originalBase = 10 * originalUnitPar;
-    return (typeBase + originalBase + convertedUnitPar);
+    totalInfo = typeBase + originalBase + convertedUnitPar;
+    return (totalInfo);
 }
