@@ -3,7 +3,7 @@
 // Email Address: rnscheffer@my.milligan.edu
 // Description: Program to convert measurements between units.
 // Assignment: Term Project
-// Last Changed: February 28, 2021
+// Last Changed: March 1, 2021
 
 #include <iostream>
 #include <string>
@@ -15,7 +15,7 @@ int unit[1], decimalPlace, typeUnit;
 double originalValue, finalValue; 
 bool confirmation, again;
 string unitOptionsOriginal(int typeUnit);
-string unitOptionsConverted(int typeUnit);
+string unitOptionsConverted(int typeUnit, int originalUnit);
 string originalUnit[3][3] = { "meters", "feet", "miles", 
     "cubic meters", "liters", "gallons", "joules", "calories", "foot-pounds" };
 string convertedUnit[3][3] = { "meters", "feet", "miles", 
@@ -67,7 +67,7 @@ int main()
             //original unit again if they messed up.
             do {
                 cin >> unit[0];
-                cout << unitOptionsConverted(typeUnit);
+                cout << unitOptionsConverted(typeUnit, unit[0]);
             } while ((unit[0] != 1) && (unit[0] != 2) && (unit[0] != 3));
             
             //This do-while statement allows users to input their
@@ -142,21 +142,25 @@ string unitOptionsOriginal(int typeUnit) {
     return(output);
 }
 
-string unitOptionsConverted(int typeUnit) {
+string unitOptionsConverted(int typeUnit, int originalUnit) {
     string output;
 
-    switch (typeUnit) {
-    case 1:
-        output = "\nWhat is your converted unit? (Type the corresponding number and then press return)\n1. meters\n2. feet\n3. miles\n";
-        break;
-    case 2:
-        output = "\nWhat is your converted unit? (Type the corresponding number and then press return)\n1. cubic meters\n2. liters\n3. gallons \n";
-        break;
-    case 3:
-        output = "\nWhat is your converted unit? (Type the corresponding number and then press return)\n1. joules\n2. calories\n3. foot-pounds \n";
-        break;
-    default:
-        output = "\nInvalid input. Try again. \n";
+    if ((originalUnit != 1) && (originalUnit != 2) && (originalUnit != 3))
+        output = "\nInvalid input. Try again.\n";
+    else {
+        switch (typeUnit) {
+        case 1:
+            output = "\nWhat is your converted unit? (Type the corresponding number and then press return)\n1. meters\n2. feet\n3. miles\n";
+            break;
+        case 2:
+            output = "\nWhat is your converted unit? (Type the corresponding number and then press return)\n1. cubic meters\n2. liters\n3. gallons \n";
+            break;
+        case 3:
+            output = "\nWhat is your converted unit? (Type the corresponding number and then press return)\n1. joules\n2. calories\n3. foot-pounds \n";
+            break;
+        default:
+            output = "\nInvalid input. Try again. \n";
+        }
     }
     return(output);
 }
