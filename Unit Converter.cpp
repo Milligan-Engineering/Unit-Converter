@@ -14,12 +14,23 @@ string Name;
 int unit[1], decimalPlace, typeUnit;
 double originalValue, finalValue; 
 bool confirmation, again;
+
 string unitOptionsOriginal(int typeUnit);
+//Preconditions: typeUnit
+//Postconditions: Shows options for unit[0] based on typeUnit 
+//or says "Invalid input" if typeUnit is not 1, 2, or 3.
+
 string unitOptionsConverted(int typeUnit, int originalUnit);
+//Preconditions: typeUnit and unit[0]
+//Postconditions: Shows options for unit[1] based on typeUnit
+//or says "Invalid input" if unit[0] is not 1, 2, or 3.
+
 string originalUnit[3][3] = { "meters", "feet", "miles", 
     "cubic meters", "liters", "gallons", "joules", "calories", "foot-pounds" };
+
 string convertedUnit[3][3] = { "meters", "feet", "miles", 
     "cubic meters", "liters", "gallons", "joules", "calories", "foot-pounds" };
+
 const double conversion[3][3][3] = { 1.0, 3.2808399, 0.00062137, 0.3048, 1.0, 0.00018939, 
     1609.344, 5280, 1.0, 1.0, 1000.0, 264.172053, 0.001, 1.0, 0.264172, 0.00378541, 3.78541178, 1.0, 
     1.0, 0.23900574, 0.73756215, 4.184, 1.0, 3.08596003, 1.35581795, 0.32404827, 1.0 };
@@ -89,7 +100,7 @@ int main()
                 cout << "Great! Let's continue.\n";
         } 
         while (confirmation == false);
-        // This loops back to line 55 to input the units again.
+        // This loops back to line 66 to input the units again.
 
         cout << "\nWhat is the value of your original measurement? (Enter and then press return)\n";
         cin >> originalValue;
@@ -115,7 +126,7 @@ int main()
             cout << "Let's start at the beginning. \n\n";
     }
     while (again == true);
-    // This loops back to line 36 to completely restart the program.
+    // This loops back to line 47 to completely restart the program.
 
     cout << "\nHave a great day, " << Name << "! Come back anytime. \n";
 
