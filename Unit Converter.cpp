@@ -25,6 +25,10 @@ int decimalPlaceInfo(int decimalPlace);
 //Postconditions: Alters decimalPlace when user inputs value
 //that is out of range.
 
+string decimalPlaceComments(int decimalPlace);
+//Preconditions: decimalPlace
+//Postconditions: Explains alteration from decimalPlaceInfo function.
+
 int main()
 {
     string Name;
@@ -54,14 +58,9 @@ int main()
             << "(Enter a number between 0 and 9 and then press return) \n";
         cin >> decimalPlace;
 
-        if (decimalPlace < 0)
-            cout << "Cannot have negative decimal places, changed to positive.\n";
-        if (decimalPlace > 9)
-            cout << "You cannot request more than 9 decimal places.\n";
-
         decimalPlace = decimalPlaceInfo(decimalPlace);
 
-        cout << "Added one for rounding accuracy.\n";
+        cout << decimalPlaceComments(decimalPlace) << "\n";
         cout << "You are going to have " << ++decimalPlace << " decimal places. \n\n";
         cout.setf(ios::fixed);
         cout.setf(ios::showpoint);
@@ -184,4 +183,9 @@ int decimalPlaceInfo(int decimalPlace) {
     for (decimalPlace; decimalPlace < 0; decimalPlace = abs(decimalPlace));;
     for (decimalPlace; decimalPlace > 9; decimalPlace--);
     return(decimalPlace);
+}
+
+string decimalPlaceComments(int decimalPlace) {
+    //Something to explain why changes were made to decimalPlace input
+    return("something");
 }
