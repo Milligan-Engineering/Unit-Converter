@@ -3,17 +3,12 @@
 // Email Address: rnscheffer@my.milligan.edu
 // Description: Program to convert measurements between units.
 // Assignment: Term Project
-// Last Changed: March 1, 2021
+// Last Changed: March 3, 2021
 
 #include <iostream>
 #include <string>
 #include <cmath>
 using namespace std;
-
-string Name;
-int unit[1], decimalPlace, typeUnit;
-double originalValue, finalValue; 
-bool confirmation, again;
 
 string unitOptionsOriginal(int typeUnit);
 //Preconditions: typeUnit
@@ -25,18 +20,27 @@ string unitOptionsConverted(int typeUnit, int originalUnit);
 //Postconditions: Shows options for unit[1] based on typeUnit
 //or says "Invalid input" if unit[0] is not 1, 2, or 3.
 
-string originalUnit[3][3] = { "meters", "feet", "miles", 
-    "cubic meters", "liters", "gallons", "joules", "calories", "foot-pounds" };
-
-string convertedUnit[3][3] = { "meters", "feet", "miles", 
-    "cubic meters", "liters", "gallons", "joules", "calories", "foot-pounds" };
-
-const double conversion[3][3][3] = { 1.0, 3.2808399, 0.00062137, 0.3048, 1.0, 0.00018939, 
-    1609.344, 5280, 1.0, 1.0, 1000.0, 264.172053, 0.001, 1.0, 0.264172, 0.00378541, 3.78541178, 1.0, 
-    1.0, 0.23900574, 0.73756215, 4.184, 1.0, 3.08596003, 1.35581795, 0.32404827, 1.0 };
+int decimalPlaceInfo(int decimalPlace);
+//Preconditions: decimalPlace
+//Postconditions: Alters decimalPlace when user inputs value
+//that is out of range.
 
 int main()
 {
+    string Name;
+    int unit[2], decimalPlace, typeUnit;
+    double originalValue, finalValue;
+    bool confirmation, again;
+
+    string originalUnit[3][3] = { "meters", "feet", "miles",
+    "cubic meters", "liters", "gallons", "joules", "calories", "foot-pounds" };
+
+    string convertedUnit[3][3] = { "meters", "feet", "miles",
+        "cubic meters", "liters", "gallons", "joules", "calories", "foot-pounds" };
+
+    const double conversion[3][3][3] = { 1.0, 3.2808399, 0.00062137, 0.3048, 1.0, 0.00018939,
+        1609.344, 5280, 1.0, 1.0, 1000.0, 264.172053, 0.001, 1.0, 0.264172, 0.00378541, 3.78541178, 1.0,
+        1.0, 0.23900574, 0.73756215, 4.184, 1.0, 3.08596003, 1.35581795, 0.32404827, 1.0 };
 
     cout << "Unit Converter\n";
     cout << "What is your name? (Enter your name and then press return) \n";
@@ -50,11 +54,12 @@ int main()
             << "(Enter a number between 0 and 9 and then press return) \n";
         cin >> decimalPlace;
 
-        for (decimalPlace; decimalPlace < 0; decimalPlace = abs(decimalPlace))
+        if (decimalPlace < 0)
             cout << "Cannot have negative decimal places, changed to positive.\n";
         if (decimalPlace > 9)
             cout << "You cannot request more than 9 decimal places.\n";
-        for (decimalPlace; decimalPlace > 9; decimalPlace--);
+
+        decimalPlace = decimalPlaceInfo(decimalPlace);
 
         cout << "Added one for rounding accuracy.\n";
         cout << "You are going to have " << ++decimalPlace << " decimal places. \n\n";
@@ -100,11 +105,10 @@ int main()
                 cout << "Great! Let's continue.\n";
         } 
         while (confirmation == false);
-        // This loops back to line 66 to input the units again.
+        // This loops back to line 71 to input the units again.
 
         cout << "\nWhat is the value of your original measurement? (Enter and then press return)\n";
         cin >> originalValue;
-        cout << "\n";
 
         // Each number is assigned to a type or unit as follows:
         // Unit Type: 1 = length, 2 = volume, 3 = energy
@@ -114,7 +118,7 @@ int main()
 
         finalValue = originalValue * conversion[typeUnit - 1][unit[0] - 1][unit[1] - 1];
         
-        cout << originalValue << " " << originalUnit[typeUnit - 1][unit[0] - 1] 
+        cout << "\n" << originalValue << " " << originalUnit[typeUnit - 1][unit[0] - 1] 
             << " is equivalent to " << finalValue << " " 
             << convertedUnit[typeUnit - 1][unit[1] - 1] << ".\n";
         
@@ -126,7 +130,7 @@ int main()
             cout << "Let's start at the beginning. \n\n";
     }
     while (again == true);
-    // This loops back to line 47 to completely restart the program.
+    // This loops back to line 51 to completely restart the program.
 
     cout << "\nHave a great day, " << Name << "! Come back anytime. \n";
 
@@ -174,4 +178,10 @@ string unitOptionsConverted(int typeUnit, int originalUnit) {
         }
     }
     return(output);
+}
+
+int decimalPlaceInfo(int decimalPlace) {
+    for (decimalPlace; decimalPlace < 0; decimalPlace = abs(decimalPlace));;
+    for (decimalPlace; decimalPlace > 9; decimalPlace--);
+    return(decimalPlace);
 }
