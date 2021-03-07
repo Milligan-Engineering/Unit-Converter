@@ -3,19 +3,19 @@
 // Email Address: rnscheffer@my.milligan.edu
 // Description: Program to convert measurements between units.
 // Assignment: Term Project
-// Last Changed: March 3, 2021
+// Last Changed: March 7, 2021
 
 #include <iostream>
 #include <string>
 #include <cmath>
 using namespace std;
 
-string unitOptionsOriginal(int typeUnit);
+string unitOptions(int typeUnit);
 //Preconditions: typeUnit
 //Postconditions: Shows options for unit[0] based on typeUnit 
 //or says "Invalid input" if typeUnit is not 1, 2, or 3.
 
-string unitOptionsConverted(int typeUnit, int originalUnit);
+string unitOptions(int typeUnit, int originalUnit);
 //Preconditions: typeUnit and unit[0]
 //Postconditions: Shows options for unit[1] based on typeUnit
 //or says "Invalid input" if unit[0] is not 1, 2, or 3.
@@ -72,14 +72,14 @@ int main()
             //This do-while statement allows users to input their unit type again if they messed up.
             do {
                 cin >> typeUnit;
-                cout << unitOptionsOriginal(typeUnit);
+                cout << unitOptions(typeUnit);
             } while ((typeUnit != 1) && (typeUnit != 2) && (typeUnit != 3));
             
             //This do-while statement allows users to input their 
             //original unit again if they messed up.
             do {
                 cin >> unit[0];
-                cout << unitOptionsConverted(typeUnit, unit[0]);
+                cout << unitOptions(typeUnit, unit[0]);
             } while ((unit[0] != 1) && (unit[0] != 2) && (unit[0] != 3));
             
             //This do-while statement allows users to input their
@@ -134,7 +134,7 @@ int main()
 }
 
 
-string unitOptionsOriginal(int typeUnit) {
+string unitOptions(int typeUnit) {
     string output;
 
     switch (typeUnit) {
@@ -153,7 +153,7 @@ string unitOptionsOriginal(int typeUnit) {
     return(output);
 }
 
-string unitOptionsConverted(int typeUnit, int originalUnit) {
+string unitOptions(int typeUnit, int originalUnit) {
     string output;
 
     if ((originalUnit != 1) && (originalUnit != 2) && (originalUnit != 3))
