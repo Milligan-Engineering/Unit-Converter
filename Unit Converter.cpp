@@ -3,20 +3,20 @@
 // Email Address: rnscheffer@my.milligan.edu
 // Description: Program to convert measurements between units.
 // Assignment: Term Project
-// Last Changed: March 7, 2021
+// Last Changed: March 8, 2021
 
 #include <iostream>
 #include <string>
 #include <cmath>
 using namespace std;
 
-string unitOptions(int typeUnit);
-//Preconditions: typeUnit
+void listPrint(const string unitArray[3][3], int typeUnit);
+//Preconditions: typeUnit and unitArray[]
 //Postconditions: Shows options for unit[0] based on typeUnit 
 //or says "Invalid input" if typeUnit is not 1, 2, or 3.
 
-string unitOptions(int typeUnit, int originalUnit);
-//Preconditions: typeUnit and unit[0]
+void listPrint(const string unitArray[3][3], int typeUnit, int originalUnit);
+//Preconditions: typeUnit and unit[0] and unitArray[]
 //Postconditions: Shows options for unit[1] based on typeUnit
 //or says "Invalid input" if unit[0] is not 1, 2, or 3.
 
@@ -25,7 +25,7 @@ int decimalPlaceInfo(int decimalPlace);
 //Postconditions: Alters decimalPlace when user inputs value
 //that is out of range.
 
-string decimalPlaceComments(int decimalPlace);
+void decimalPlaceComments(int decimalPlace);
 //Preconditions: decimalPlace
 //Postconditions: Explains alteration from decimalPlaceInfo function.
 
@@ -54,11 +54,10 @@ int main()
         cout << "\n" << Name << ", how many decimal places do you want in your conversion? "
             << "(Enter a number between 0 and 9 and then press return) \n";
         cin >> decimalPlace;
-
+        decimalPlaceComments(decimalPlace);
         decimalPlace = decimalPlaceInfo(decimalPlace);
 
-        cout << decimalPlaceComments(decimalPlace) << "\n";
-        cout << "You are going to have " << ++decimalPlace << " decimal places. \n\n";
+        cout << "\nYou are going to have " << ++decimalPlace << " decimal places. \n\n";
         cout.setf(ios::fixed);
         cout.setf(ios::showpoint);
         cout.precision(decimalPlace);
@@ -72,14 +71,14 @@ int main()
             //This do-while statement allows users to input their unit type again if they messed up.
             do {
                 cin >> typeUnit;
-                cout << unitOptions(typeUnit);
+                listPrint(unitName, typeUnit);
             } while ((typeUnit != 1) && (typeUnit != 2) && (typeUnit != 3));
             
             //This do-while statement allows users to input their 
             //original unit again if they messed up.
             do {
                 cin >> unit[0];
-                cout << unitOptions(typeUnit, unit[0]);
+                listPrint(unitName, typeUnit, unit[0]);
             } while ((unit[0] != 1) && (unit[0] != 2) && (unit[0] != 3));
             
             //This do-while statement allows users to input their
@@ -134,46 +133,26 @@ int main()
 }
 
 
-string unitOptions(int typeUnit) {
-    string output;
-
-    switch (typeUnit) {
-    case 1:
-        output = "\nWhat is your original unit? (Type the corresponding number and then press return)\n1. meters\n2. feet\n3. miles\n";
-        break;
-    case 2:
-        output = "\nWhat is your original unit? (Type the corresponding number and then press return)\n1. cubic meters\n2. liters\n3. gallons \n";
-        break;
-    case 3:
-        output = "\nWhat is your original unit? (Type the corresponding number and then press return)\n1. joules\n2. calories\n3. foot-pounds \n";
-        break;
-    default:
-        output = "\nInvalid input. Try again. \n";
+void listPrint(const string unitArray[3][3], int typeUnit) {
+    if ((typeUnit != 1) && (typeUnit != 2) && (typeUnit != 3))
+        cout << "\nInvalid input. Try again.\n";
+    else {
+        cout << "\nWhat is your converted unit? (Type the corresponding number and then press return)\n";
+        for (int i=1; i <= 3; i++)
+            cout << i << ". " << unitArray[typeUnit - 1][i - 1] << "\n";
     }
-    return(output);
+    return;
 }
 
-string unitOptions(int typeUnit, int originalUnit) {
-    string output;
-
+void listPrint(const string unitArray[3][3], int typeUnit, int originalUnit) {
     if ((originalUnit != 1) && (originalUnit != 2) && (originalUnit != 3))
-        output = "\nInvalid input. Try again.\n";
+        cout << "\nInvalid input. Try again.\n";
     else {
-        switch (typeUnit) {
-        case 1:
-            output = "\nWhat is your converted unit? (Type the corresponding number and then press return)\n1. meters\n2. feet\n3. miles\n";
-            break;
-        case 2:
-            output = "\nWhat is your converted unit? (Type the corresponding number and then press return)\n1. cubic meters\n2. liters\n3. gallons \n";
-            break;
-        case 3:
-            output = "\nWhat is your converted unit? (Type the corresponding number and then press return)\n1. joules\n2. calories\n3. foot-pounds \n";
-            break;
-        default:
-            output = "\nInvalid input. Try again. \n";
-        }
+        cout << "\nWhat is your converted unit? (Type the corresponding number and then press return)\n";
+        for (int i=1; i <= 3; i++)
+            cout << i << ". " << unitArray[typeUnit - 1][i - 1] << "\n";
     }
-    return(output);
+    return;
 }
 
 int decimalPlaceInfo(int decimalPlace) {
@@ -182,7 +161,11 @@ int decimalPlaceInfo(int decimalPlace) {
     return(decimalPlace);
 }
 
-string decimalPlaceComments(int decimalPlace) {
-    //Something to explain why changes were made to decimalPlace input
-    return("something");
+void decimalPlaceComments(int decimalPlace) {
+    if (decimalPlace < 0)
+        cout << "Cannot have negative decimal places. Changed to positive.\n";
+    if (abs(decimalPlace) > 9)
+        cout << "Cannot request more than 9 decimal places. Changed to 9.\n";
+    cout << "Added one for rounding accuracy.\n";
+    return;
 }
