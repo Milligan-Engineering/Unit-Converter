@@ -11,13 +11,15 @@
 using namespace std;
 
 void listPrint(const string unitArray[3][3], int typeUnit);
-//Preconditions: typeUnit and unitArray[]
+//Preconditions: unitName[3][3] and typeUnit
 //Postconditions: Shows options for unit[0] based on typeUnit 
+//using the array unitName[3][3]
 //or says "Invalid input" if typeUnit is not 1, 2, or 3.
 
 void listPrint(const string unitArray[3][3], int typeUnit, int originalUnit);
-//Preconditions: typeUnit and unit[0] and unitArray[]
+//Preconditions: unitName[3][3], typeUnit, and unit[0]
 //Postconditions: Shows options for unit[1] based on typeUnit
+//using the array unitName[3][3]
 //or says "Invalid input" if unit[0] is not 1, 2, or 3.
 
 int decimalPlaceInfo(int decimalPlace);
@@ -100,7 +102,7 @@ int main()
                 cout << "Great! Let's continue.\n";
         } 
         while (confirmation == false);
-        // This loops back to line 67 to input the units again.
+        // This loops back to line 68 to input the units again.
 
         cout << "\nWhat is the value of your original measurement? (Enter and then press return)\n";
         cin >> originalValue;
@@ -125,7 +127,7 @@ int main()
             cout << "Let's start at the beginning. \n\n";
     }
     while (again == true);
-    // This loops back to line 52 to completely restart the program.
+    // This loops back to line 54 to completely restart the program.
 
     cout << "\nHave a great day, " << Name << "! Come back anytime. \n";
 
