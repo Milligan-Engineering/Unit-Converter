@@ -3,7 +3,7 @@
 // Email Address: rnscheffer@my.milligan.edu
 // Description: Program to convert measurements between units.
 // Assignment: Term Project
-// Last Changed: March 9, 2021
+// Last Changed: March 10, 2021
 
 #include <iostream>
 #include <string>
@@ -40,7 +40,7 @@ int main()
 {
     string Name;
     int unit[2], decimalPlace, typeUnit;
-    double originalValue, finalValue;
+    double value[2];
     bool confirmation, again;
 
     string unitName[3][3] = { "meters", "feet", "miles",
@@ -110,7 +110,7 @@ int main()
         // This loops back to line 68 to input the units again.
 
         cout << "\nWhat is the value of your original measurement? (Enter and then press return)\n";
-        cin >> originalValue;
+        cin >> value[0];
 
         // Each number is assigned to a type or unit as follows:
         // Unit Type: 1 = length, 2 = volume, 3 = energy
@@ -118,10 +118,10 @@ int main()
         // Volume Units: 1 = cubic meters, 2 = liters, 3 = gallons
         // Energy Units: 1 = joules, 2 = calories, 3 = foot-pounds
 
-        finalValue = originalValue * conversion[typeUnit - 1][unit[0] - 1][unit[1] - 1];
+        value[1] = value[0] * conversion[typeUnit - 1][unit[0] - 1][unit[1] - 1];
         
-        cout << "\n" << originalValue << " " << unitName[typeUnit - 1][unit[0] - 1] 
-            << " is equivalent to " << finalValue << " " 
+        cout << "\n" << value[0] << " " << unitName[typeUnit - 1][unit[0] - 1] 
+            << " is equivalent to " << value[1] << " " 
             << unitName[typeUnit - 1][unit[1] - 1] << ".\n";
         
         cout << "\n" << Name << ", thank you for using the Unit Converter!\n";
