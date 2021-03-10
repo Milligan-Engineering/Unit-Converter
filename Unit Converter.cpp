@@ -12,17 +12,19 @@ using namespace std;
 
 void listPrint(const string unitArray[3][3], int typeUnit);
 //Preconditions: the unit names are already stored in the array unitName[3][3]
-//and the user inputs typeUnit of 1 for length, 2 for volume, or 3 for energy
+//and the user inputs typeUnit of 1 for length, 2 for volume, or 3 for energy;
+//in this function, typeUnit-1 is the first index in the array
 //Postconditions: Shows options for unit[0] based on typeUnit 
-//using the array unitName[3][3]
+//by printing the array unitName[typeUnit-1][0-2]
 //or says "Invalid input" if typeUnit is not 1, 2, or 3.
 
 void listPrint(const string unitArray[3][3], int typeUnit, int originalUnit);
 //Preconditions: the unit names are already stored in the array unitName[3][3],
 //user inputs typeUnit of 1 for length, 2 for volume, or 3 for energy,
 //and the user inputs unit[0] of 1, 2, or 3 based on what they want
+//in this function, typeUnit-1 is the first index in the array
 //Postconditions: Shows options for unit[1] based on typeUnit
-//using the array unitName[3][3]
+//by printing the array unitName[typeUnit-1][0-2]
 //or says "Invalid input" if unit[0] is not 1, 2, or 3.
 
 int decimalPlaceInfo(int decimalPlace);
