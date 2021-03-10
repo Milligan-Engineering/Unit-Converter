@@ -3,7 +3,7 @@
 // Email Address: rnscheffer@my.milligan.edu
 // Description: Program to convert measurements between units.
 // Assignment: Term Project
-// Last Changed: March 8, 2021
+// Last Changed: March 9, 2021
 
 #include <iostream>
 #include <string>
@@ -11,24 +11,27 @@
 using namespace std;
 
 void listPrint(const string unitArray[3][3], int typeUnit);
-//Preconditions: unitName[3][3] and typeUnit
+//Preconditions: the unit names are already stored in the array unitName[3][3]
+//and the user inputs typeUnit of 1 for length, 2 for volume, or 3 for energy
 //Postconditions: Shows options for unit[0] based on typeUnit 
 //using the array unitName[3][3]
 //or says "Invalid input" if typeUnit is not 1, 2, or 3.
 
 void listPrint(const string unitArray[3][3], int typeUnit, int originalUnit);
-//Preconditions: unitName[3][3], typeUnit, and unit[0]
+//Preconditions: the unit names are already stored in the array unitName[3][3],
+//user inputs typeUnit of 1 for length, 2 for volume, or 3 for energy,
+//and the user inputs unit[0] of 1, 2, or 3 based on what they want
 //Postconditions: Shows options for unit[1] based on typeUnit
 //using the array unitName[3][3]
 //or says "Invalid input" if unit[0] is not 1, 2, or 3.
 
 int decimalPlaceInfo(int decimalPlace);
-//Preconditions: decimalPlace
+//Preconditions: the user inputs a value for decimalPlace between 0 and 9
 //Postconditions: Alters decimalPlace when user inputs value
 //that is out of range.
 
 void decimalPlaceComments(int decimalPlace);
-//Preconditions: decimalPlace
+//Preconditions: the user inputs a value for decimalPlace between 0 and 9
 //Postconditions: Explains alteration from decimalPlaceInfo function.
 
 int main()
