@@ -3,38 +3,46 @@
 // Email Address: rnscheffer@my.milligan.edu
 // Description: Program to convert measurements between units.
 // Assignment: Term Project
-// Last Changed: March 10, 2021
+// Last Changed: March 15, 2021
 
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <cmath>
 using namespace std;
 
-void listPrint(const string unitArray[3][3], int typeUnit);
+void listPrint(const string unitArray[][3], int typeUnit);
 //Preconditions: the unit names are already stored in the array unitName[3][3]
 //and the user inputs typeUnit of 1 for length, 2 for volume, or 3 for energy;
 //in this function, typeUnit-1 is the first index in the array
-//Postconditions: Shows options for unit[0] based on typeUnit 
+//Postconditions: shows options for unit[0] based on typeUnit 
 //by printing the array unitName[typeUnit-1][0-2]
 //or says "Invalid input" if typeUnit is not 1, 2, or 3.
 
-void listPrint(const string unitArray[3][3], int typeUnit, int originalUnit);
+void listPrint(const string unitArray[][3], int typeUnit, int originalUnit);
 //Preconditions: the unit names are already stored in the array unitName[3][3],
 //user inputs typeUnit of 1 for length, 2 for volume, or 3 for energy,
 //and the user inputs unit[0] of 1, 2, or 3 based on what they want
 //in this function, typeUnit-1 is the first index in the array
-//Postconditions: Shows options for unit[1] based on typeUnit
+//Postconditions: shows options for unit[1] based on typeUnit
 //by printing the array unitName[typeUnit-1][0-2]
 //or says "Invalid input" if unit[0] is not 1, 2, or 3.
 
 int decimalPlaceInfo(int decimalPlace);
 //Preconditions: the user inputs a value for decimalPlace between 0 and 9
-//Postconditions: Alters decimalPlace when user inputs value
+//Postconditions: alters decimalPlace when user inputs value
 //that is out of range.
 
 void decimalPlaceComments(int decimalPlace);
 //Preconditions: the user inputs a value for decimalPlace between 0 and 9
-//Postconditions: Explains alteration from decimalPlaceInfo function.
+//Postconditions: explains alteration from decimalPlaceInfo function.
+
+void unitType(ifstream& inStream);
+//Preconditions: the infile.txt has a list of type of units
+//Postconditions: outputs a list of type of units based on the file infile.txt
+
+ifstream inStream;
+ofstream outStream;
 
 int main()
 {
@@ -54,6 +62,18 @@ int main()
     cout << "What is your name? (Enter your name and then press return) \n";
     cin >> Name;
 
+    inStream.open("infile.txt");
+    if (inStream.fail()) {
+        cout << "Input file opening failed. \n";
+        exit(1);
+    }
+
+    outStream.open("outfile.txt");
+    if (outStream.fail()) {
+        cout << "Output file opening failed. \n";
+        exit(1);
+    }
+
     // This do-while statement allows the program to start over
     // if the user so chooses to convert another measurement. 
     do {
@@ -72,8 +92,7 @@ int main()
         // This do-while statement allows the user to input their units again in case they messed up.
         do {
 
-            cout << "What is your unit type? (Type the corresponding number and then press return)\n";
-            cout << "1. length\n" << "2. volume \n" << "3. energy\n";
+            unitType(inStream);
 
             //This do-while statement allows users to input their unit type again if they messed up.
             do {
@@ -107,7 +126,7 @@ int main()
                 cout << "Great! Let's continue.\n";
         } 
         while (confirmation == false);
-        // This loops back to line 68 to input the units again.
+        // This loops back to line 93 to input the units again.
 
         cout << "\nWhat is the value of your original measurement? (Enter and then press return)\n";
         cin >> value[0];
@@ -123,6 +142,10 @@ int main()
         cout << "\n" << value[0] << " " << unitName[typeUnit - 1][unit[0] - 1] 
             << " is equivalent to " << value[1] << " " 
             << unitName[typeUnit - 1][unit[1] - 1] << ".\n";
+
+        outStream << "\n" << value[0] << " " << unitName[typeUnit - 1][unit[0] - 1]
+            << " is equivalent to " << value[1] << " "
+            << unitName[typeUnit - 1][unit[1] - 1] << ".\n";
         
         cout << "\n" << Name << ", thank you for using the Unit Converter!\n";
         cout << "Would you like to convert another measurement?"
@@ -132,7 +155,10 @@ int main()
             cout << "Let's start at the beginning. \n\n";
     }
     while (again == true);
-    // This loops back to line 54 to completely restart the program.
+    // This loops back to line 79 to completely restart the program.
+
+    inStream.close();
+    outStream.close();
 
     cout << "\nHave a great day, " << Name << "! Come back anytime. \n";
 
@@ -140,7 +166,7 @@ int main()
 }
 
 
-void listPrint(const string unitArray[3][3], int typeUnit) {
+void listPrint(const string unitArray[][3], int typeUnit) {
     if ((typeUnit != 1) && (typeUnit != 2) && (typeUnit != 3))
         cout << "\nInvalid input. Try again.\n";
     else {
@@ -151,7 +177,7 @@ void listPrint(const string unitArray[3][3], int typeUnit) {
     return;
 }
 
-void listPrint(const string unitArray[3][3], int typeUnit, int originalUnit) {
+void listPrint(const string unitArray[][3], int typeUnit, int originalUnit) {
     if ((originalUnit != 1) && (originalUnit != 2) && (originalUnit != 3))
         cout << "\nInvalid input. Try again.\n";
     else {
@@ -175,4 +201,14 @@ void decimalPlaceComments(int decimalPlace) {
         cout << "Cannot request more than 9 decimal places. Changed to 9.\n";
     cout << "Added one for rounding accuracy.\n";
     return;
+}
+
+void unitType(ifstream& inStream) {
+    cout << "What is your unit type? (Type the corresponding number and then press return)\n";
+    string next;
+    int i=1;
+    while (inStream >> next) {
+        cout << i<< ". " << next << "\n";
+        i++;
+    }
 }
