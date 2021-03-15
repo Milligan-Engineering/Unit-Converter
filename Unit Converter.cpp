@@ -41,15 +41,15 @@ void unitType(ifstream& inStream);
 //Preconditions: the infile.txt has a list of type of units
 //Postconditions: outputs a list of type of units based on the file infile.txt
 
-ifstream inStream;
-ofstream outStream;
-
 int main()
 {
     string Name;
     int unit[2], decimalPlace, typeUnit;
     double value[2];
     bool confirmation, again;
+
+    ifstream inStream;
+    ofstream outStream;
 
     string unitName[3][3] = { "meters", "feet", "miles",
     "cubic meters", "liters", "gallons", "joules", "calories", "foot-pounds" };
