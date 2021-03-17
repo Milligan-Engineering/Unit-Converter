@@ -170,7 +170,7 @@ void listPrint(const string unitArray[][3], int typeUnit) {
     if ((typeUnit != 1) && (typeUnit != 2) && (typeUnit != 3))
         cout << "\nInvalid input. Try again.\n";
     else {
-        cout << "\nWhat is your converted unit? (Type the corresponding number and then press return)\n";
+        cout << "\nWhat is your original unit? (Type the corresponding number and then press return)\n";
         for (int i=1; i <= 3; i++)
             cout << i << ". " << unitArray[typeUnit - 1][i - 1] << "\n";
     }
