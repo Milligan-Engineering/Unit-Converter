@@ -3,7 +3,7 @@
 // Email Address: rnscheffer@my.milligan.edu
 // Description: Program to convert measurements between units.
 // Assignment: Term Project
-// Last Changed: March 18, 2021
+// Last Changed: March 19, 2021
 
 #include <iostream>
 #include <fstream>
@@ -13,27 +13,27 @@ using namespace std;
 
 void listPrint(const string unitArray[][3], int typeUnit, int numTypes);
 //Preconditions: the unit names are already stored in the array unitName[3][3]
-//and the user inputs typeUnit of 1 for length, 2 for volume, or 3 for energy;
-//in this function, typeUnit-1 is the first index in the array, and 
-//numTypes is the size of the first index of the array.
+//      and the user inputs typeUnit of 1 for length, 2 for volume, or 3 for energy;
+//      in this function, typeUnit-1 is the first index in the array, and 
+//      numTypes is the size of the first index of the array.
 //Postconditions: shows options for unit[0] based on typeUnit 
-//by printing the array unitName[typeUnit-1][0-2]
-//or says "Invalid input" if typeUnit is not 1, 2, or 3.
+//      by printing the array unitName[typeUnit-1][0-2]
+//      or says "Invalid input" if typeUnit is not 1, 2, or 3.
 
 void listPrint(const string unitArray[][3], int typeUnit, int originalUnit, int numTypes);
 //Preconditions: the unit names are already stored in the array unitName[3][3],
-//user inputs typeUnit of 1 for length, 2 for volume, or 3 for energy,
-//and the user inputs unit[0] of 1, 2, or 3 based on what they want;
-//in this function, typeUnit-1 is the first index in the array, and
-//numTypes is the first index of the array.
+//      user inputs typeUnit of 1 for length, 2 for volume, or 3 for energy,
+//      and the user inputs unit[0] of 1, 2, or 3 based on what they want;
+//      in this function, typeUnit-1 is the first index in the array, and
+//      numTypes is the first index of the array.
 //Postconditions: shows options for unit[1] based on typeUnit
-//by printing the array unitName[typeUnit-1][0-2]
-//or says "Invalid input" if unit[0] is not 1, 2, or 3.
+//      by printing the array unitName[typeUnit-1][0-2]
+//      or says "Invalid input" if unit[0] is not 1, 2, or 3.
 
 int decimalPlaceInfo(int decimalPlace);
 //Preconditions: the user inputs a value for decimalPlace between 0 and 9
 //Postconditions: alters decimalPlace when user inputs value
-//that is out of range.
+//      that is out of range.
 
 void decimalPlaceComments(int decimalPlace);
 //Preconditions: the user inputs a value for decimalPlace between 0 and 9
@@ -42,7 +42,7 @@ void decimalPlaceComments(int decimalPlace);
 void unitType(ifstream& inStream, int& numTypes);
 //Preconditions: the infile.txt has a list of type of units and numTypes is initialized to 0.
 //Postconditions: outputs a list of type of units based on the file infile.txt and records how 
-//many unit types there are.
+//      many unit types there are.
 
 int main()
 {
