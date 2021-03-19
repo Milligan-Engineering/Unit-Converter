@@ -3,7 +3,7 @@
 // Email Address: rnscheffer@my.milligan.edu
 // Description: Program to convert measurements between units.
 // Assignment: Term Project
-// Last Changed: March 15, 2021
+// Last Changed: March 18, 2021
 
 #include <iostream>
 #include <fstream>
@@ -11,19 +11,21 @@
 #include <cmath>
 using namespace std;
 
-void listPrint(const string unitArray[][3], int typeUnit);
+void listPrint(const string unitArray[][3], int typeUnit, int numTypes);
 //Preconditions: the unit names are already stored in the array unitName[3][3]
 //and the user inputs typeUnit of 1 for length, 2 for volume, or 3 for energy;
-//in this function, typeUnit-1 is the first index in the array
+//in this function, typeUnit-1 is the first index in the array, and 
+//numTypes is the size of the first index of the array.
 //Postconditions: shows options for unit[0] based on typeUnit 
 //by printing the array unitName[typeUnit-1][0-2]
 //or says "Invalid input" if typeUnit is not 1, 2, or 3.
 
-void listPrint(const string unitArray[][3], int typeUnit, int originalUnit);
+void listPrint(const string unitArray[][3], int typeUnit, int originalUnit, int numTypes);
 //Preconditions: the unit names are already stored in the array unitName[3][3],
 //user inputs typeUnit of 1 for length, 2 for volume, or 3 for energy,
-//and the user inputs unit[0] of 1, 2, or 3 based on what they want
-//in this function, typeUnit-1 is the first index in the array
+//and the user inputs unit[0] of 1, 2, or 3 based on what they want;
+//in this function, typeUnit-1 is the first index in the array, and
+//numTypes is the first index of the array.
 //Postconditions: shows options for unit[1] based on typeUnit
 //by printing the array unitName[typeUnit-1][0-2]
 //or says "Invalid input" if unit[0] is not 1, 2, or 3.
@@ -37,15 +39,16 @@ void decimalPlaceComments(int decimalPlace);
 //Preconditions: the user inputs a value for decimalPlace between 0 and 9
 //Postconditions: explains alteration from decimalPlaceInfo function.
 
-void unitType(ifstream& inStream);
-//Preconditions: the infile.txt has a list of type of units
-//Postconditions: outputs a list of type of units based on the file infile.txt
+void unitType(ifstream& inStream, int& numTypes);
+//Preconditions: the infile.txt has a list of type of units and numTypes is initialized to 0.
+//Postconditions: outputs a list of type of units based on the file infile.txt and records how 
+//many unit types there are.
 
 int main()
 {
     string Name;
-    int unit[2], decimalPlace, typeUnit;
-    double value[2];
+    int originalUnit, convertedUnit, decimalPlace, typeUnit, numTypes;
+    double originalValue, finalValue;
     bool confirmation, again;
 
     ifstream inStream;
@@ -92,31 +95,31 @@ int main()
         // This do-while statement allows the user to input their units again in case they messed up.
         do {
 
-            unitType(inStream);
+            unitType(inStream, numTypes);
 
             //This do-while statement allows users to input their unit type again if they messed up.
             do {
                 cin >> typeUnit;
-                listPrint(unitName, typeUnit);
+                listPrint(unitName, typeUnit, numTypes);
             } while ((typeUnit != 1) && (typeUnit != 2) && (typeUnit != 3));
             
             //This do-while statement allows users to input their 
             //original unit again if they messed up.
             do {
-                cin >> unit[0];
-                listPrint(unitName, typeUnit, unit[0]);
-            } while ((unit[0] != 1) && (unit[0] != 2) && (unit[0] != 3));
+                cin >> originalUnit;
+                listPrint(unitName, typeUnit, originalUnit, numTypes);
+            } while ((originalUnit != 1) && (originalUnit != 2) && (originalUnit != 3));
             
             //This do-while statement allows users to input their
             //converted unit again if they messed up
             do {
-                cin >> unit[1];
-                if ((unit[1] != 1) && (unit[1] != 2) && (unit[1] != 3))
+                cin >> convertedUnit;
+                if ((convertedUnit != 1) && (convertedUnit != 2) && (convertedUnit != 3))
                     cout << "Invalid input. Try again. \n";
-            } while ((unit[1] != 1) && (unit[1] != 2) && (unit[1] != 3));
+            } while ((convertedUnit != 1) && (convertedUnit != 2) && (convertedUnit != 3));
 
-            cout << "\nYou are converting from " << unitName[typeUnit - 1][unit[0] - 1] 
-                << " to " << unitName[typeUnit - 1][unit[1] - 1] << ".\n";
+            cout << "\nYou are converting from " << unitName[typeUnit - 1][originalUnit - 1]
+                << " to " << unitName[typeUnit - 1][convertedUnit - 1] << ".\n";
 
             cout << "Is this correct? (Type 1 for yes or 0 for no and then press return)\n";
             cin >> confirmation;
@@ -126,10 +129,10 @@ int main()
                 cout << "Great! Let's continue.\n";
         } 
         while (confirmation == false);
-        // This loops back to line 93 to input the units again.
+        // This loops back to line 96 to input the units again.
 
         cout << "\nWhat is the value of your original measurement? (Enter and then press return)\n";
-        cin >> value[0];
+        cin >> originalValue;
 
         // Each number is assigned to a type or unit as follows:
         // Unit Type: 1 = length, 2 = volume, 3 = energy
@@ -137,15 +140,15 @@ int main()
         // Volume Units: 1 = cubic meters, 2 = liters, 3 = gallons
         // Energy Units: 1 = joules, 2 = calories, 3 = foot-pounds
 
-        value[1] = value[0] * conversion[typeUnit - 1][unit[0] - 1][unit[1] - 1];
+        finalValue = originalValue * conversion[typeUnit - 1][originalUnit - 1][convertedUnit - 1];
         
-        cout << "\n" << value[0] << " " << unitName[typeUnit - 1][unit[0] - 1] 
-            << " is equivalent to " << value[1] << " " 
-            << unitName[typeUnit - 1][unit[1] - 1] << ".\n";
+        cout << "\n" << originalValue << " " << unitName[typeUnit - 1][originalUnit - 1]
+            << " is equivalent to " << finalValue << " " 
+            << unitName[typeUnit - 1][convertedUnit - 1] << ".\n";
 
-        outStream << "\n" << value[0] << " " << unitName[typeUnit - 1][unit[0] - 1]
-            << " is equivalent to " << value[1] << " "
-            << unitName[typeUnit - 1][unit[1] - 1] << ".\n";
+        outStream << "\n" << originalValue << " " << unitName[typeUnit - 1][originalUnit - 1]
+            << " is equivalent to " << finalValue << " " 
+            << unitName[typeUnit - 1][convertedUnit - 1] << ".\n";
         
         cout << "\n" << Name << ", thank you for using the Unit Converter!\n";
         cout << "Would you like to convert another measurement?"
@@ -155,7 +158,7 @@ int main()
             cout << "Let's start at the beginning. \n\n";
     }
     while (again == true);
-    // This loops back to line 79 to completely restart the program.
+    // This loops back to line 82 to completely restart the program.
 
     inStream.close();
     outStream.close();
@@ -166,7 +169,7 @@ int main()
 }
 
 
-void listPrint(const string unitArray[][3], int typeUnit) {
+void listPrint(const string unitArray[][3], int typeUnit, int numTypes) {
     if ((typeUnit != 1) && (typeUnit != 2) && (typeUnit != 3))
         cout << "\nInvalid input. Try again.\n";
     else {
@@ -177,7 +180,7 @@ void listPrint(const string unitArray[][3], int typeUnit) {
     return;
 }
 
-void listPrint(const string unitArray[][3], int typeUnit, int originalUnit) {
+void listPrint(const string unitArray[][3], int typeUnit, int originalUnit, int numTypes) {
     if ((originalUnit != 1) && (originalUnit != 2) && (originalUnit != 3))
         cout << "\nInvalid input. Try again.\n";
     else {
@@ -203,12 +206,12 @@ void decimalPlaceComments(int decimalPlace) {
     return;
 }
 
-void unitType(ifstream& inStream) {
+void unitType(ifstream& inStream, int& numTypes) {
     cout << "What is your unit type? (Type the corresponding number and then press return)\n";
     string next;
-    int i=1;
+    numTypes = 0;
     while (inStream >> next) {
-        cout << i<< ". " << next << "\n";
-        i++;
+        numTypes++;
+        cout << numTypes << ". " << next << "\n";
     }
 }
