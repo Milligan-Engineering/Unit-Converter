@@ -3,7 +3,7 @@
 // Email Address: rnscheffer@my.milligan.edu
 // Description: Program to convert measurements between units.
 // Assignment: Term Project
-// Last Changed: March 24, 2021
+// Last Changed: March 29, 2021
 
 #include <iostream>
 #include <fstream>
@@ -42,19 +42,26 @@ void decimalPlaceComments(int decimalPlace);
 
 void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20], double conversion[][10][10], int numTypes, int numUnits, int numFactors);
 //Preconditions: the infile.txt has a list of type of units and numTypes is initialized to 0.
-//Postconditions: outputs a list of type of units based on the file infile.txt and records how 
-//      many unit types there are.
+//Postconditions: assigns everything in infile.txt to arrays for typeUnit, unit, and conversion.
 
 void typeList(char typeUnit[][20], int numTypes);
+//Preconditions: the typeUnit array was filled in the assignArray function and 
+//      numTypes was determined in the assignArray function as well.
+//Postconditions: outputs a list of unit types based on the typeUnit array.
+
+struct UnitInfo
+{
+    int unit;
+    double value;
+};
 
 int main()
 {
     string Name;
-    int originalUnit, convertedUnit, decimalPlace, unitType;
-    double originalValue, finalValue;
-    bool confirmation, again;
+    int decimalPlace, unitType;
+    char confirmation, again;
+    UnitInfo original, final;
     int numTypes = 0, numUnits = 0, numFactors = 0;
-
     char typeUnit[10][20];
     char unit[10][10][20];
     double conversion[10][10][10];
@@ -108,33 +115,33 @@ int main()
             //This do-while statement allows users to input their 
             //original unit again if they messed up.
             do {
-                cin >> originalUnit;
-                listPrintUnit(unit, numUnits, originalUnit, unitType);
-            } while ((originalUnit < 1) && (originalUnit > numUnits));
+                cin >> original.unit;
+                listPrintUnit(unit, numUnits, original.unit, unitType);
+            } while ((original.unit < 1) && (original.unit > numUnits));
             
             //This do-while statement allows users to input their
             //converted unit again if they messed up
             do {
-                cin >> convertedUnit;
-                if ((convertedUnit < 1) && (convertedUnit > numUnits))
+                cin >> final.unit;
+                if ((final.unit < 1) && (final.unit > numUnits))
                     cout << "Invalid input. Try again. \n";
-            } while ((convertedUnit < 1) && (convertedUnit > numUnits));
+            } while ((final.unit < 1) && (final.unit > numUnits));
 
-            cout << "\nYou are converting from " << unit[unitType - 1][originalUnit - 1]
-                << " to " << unit[unitType - 1][convertedUnit - 1] << ".\n";
+            cout << "\nYou are converting from " << unit[unitType - 1][original.unit - 1]
+                << " to " << unit[unitType - 1][final.unit - 1] << ".\n";
 
             cout << "Is this correct? (Type 1 for yes or 0 for no and then press return)\n";
             cin >> confirmation;
-            if (confirmation == false)
+            if ((confirmation == '0') && (confirmation == 'n'))
                 cout << "\nLet's try again. \n";
             else
                 cout << "Great! Let's continue.\n";
         } 
-        while (confirmation == false);
-        // This loops back to line 96 to input the units again.
+        while ((confirmation == '0') && (confirmation == 'n'));
+        // This loops back to line 90 to input the units again.
 
         cout << "\nWhat is the value of your original measurement? (Enter and then press return)\n";
-        cin >> originalValue;
+        cin >> original.value;
 
         // Each number is assigned to a type or unit as follows:
         // Unit Type: 1 = length, 2 = volume, 3 = energy
@@ -142,25 +149,25 @@ int main()
         // Volume Units: 1 = cubic meters, 2 = liters, 3 = gallons
         // Energy Units: 1 = joules, 2 = calories, 3 = foot-pounds
 
-        finalValue = originalValue * conversion[unitType - 1][originalUnit - 1][convertedUnit - 1];
+        final.value = original.value * conversion[unitType - 1][original.unit - 1][final.unit - 1];
         
-        cout << "\n" << originalValue << " " << unit[unitType - 1][originalUnit - 1]
-            << " is equivalent to " << finalValue << " " 
-            << unit[unitType - 1][convertedUnit - 1] << ".\n";
+        cout << "\n" << original.value << " " << unit[unitType - 1][original.unit - 1]
+            << " is equivalent to " << final.value << " " 
+            << unit[unitType - 1][final.unit - 1] << ".\n";
 
-        outStream << "\n" << originalValue << " " << unit[unitType - 1][originalUnit - 1]
-            << " is equivalent to " << finalValue << " " 
-            << unit[unitType - 1][convertedUnit - 1] << ".\n";
+        outStream << "\n" << original.value << " " << unit[unitType - 1][original.unit - 1]
+            << " is equivalent to " << final.value << " " 
+            << unit[unitType - 1][final.unit - 1] << ".\n";
         
         cout << "\n" << Name << ", thank you for using the Unit Converter!\n";
         cout << "Would you like to convert another measurement?"
             << " (Type 1 for yes or 0 for no and then press return\n";
         cin >> again;
-        if (again == true)
+        if ((again == '1') && (again == 'y'))
             cout << "Let's start at the beginning. \n\n";
     }
-    while (again == true);
-    // This loops back to line 82 to completely restart the program.
+    while ((again == '1') && (again == 'y'));
+    // This loops back to line 104 to completely restart the program.
 
     inStream.close();
     outStream.close();
@@ -173,16 +180,15 @@ int main()
 
 void listPrint(char unit[][10][20], int numUnits, int numTypes, int unitType) {
     int k = 0;
-    if ((unitType < 1) && (unitType > numTypes))
+    if ((unitType < 1) && (unitType > 3))
         cout << "\nInvalid input. Try again.\n";
     else {
-        for (int i = 1; i <= numUnits; i++) {
+        for (int i = 1; i <= 3; i++) {
             cout << i << ". ";
                 while (unit[unitType][i-1][k] != '\0') {
                     cout << unit[unitType][i-1][k];
                     k++;
                 }
-            numUnits++;
             cout << "\n";
         }
     }
@@ -191,16 +197,17 @@ void listPrint(char unit[][10][20], int numUnits, int numTypes, int unitType) {
 
 void listPrintUnit(char unit[][10][20], int numUnits, int originalUnit, int unitType) {
     int k = 0;
-    if ((originalUnit < 1) && (originalUnit > numUnits))
+    if ((originalUnit < 1) && (originalUnit > 3))
         cout << "\nInvalid input. Try again.\n";
     else {
-        for (int i = 1; i <= numUnits; i++) {
+        for (int i = 1; i <= 3; i++) {
             cout << i << ". ";
             while (unit[unitType][i-1][k] != '\0') {
                 cout << unit[unitType][i - 1][k];
                 k++;
             }
             numUnits++;
+            unitType++;
             cout << "\n";
         }
     }
@@ -225,42 +232,47 @@ void decimalPlaceComments(int decimalPlace) {
 void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20], double conversion[][10][10], int numTypes, int numUnits, int numFactors) {
     char factor[30][10];
     char next;
-    while (inStream >> next) {
+
+    while (!inStream.eof()) {
         inStream.get(next);
         while (next != ';') {
-            inStream.get(next);
             int i = 0;
             while (next != ',') {
-                inStream.get(next);
                 typeUnit[numTypes][i] = next;
                 i++;
+                inStream.get(next);
             }
             typeUnit[numTypes][i] = '\0';
-            numTypes++;
-            while (next != '\n') {
-                inStream.get(next);
+            numUnits = -1;
+            while ((next != 'n') && (next != '\n')) {
                 int j = 0;
-                while (next != ',') {
-                    inStream.get(next);
+                while ((next != ',') && (next != '\\')) {
                     unit[numTypes][numUnits][j] = next;
                     j++;
+                    inStream.get(next);
                 }
                 unit[numTypes][numUnits][j] = '\0';
                 numUnits++;
-            }
-        }
-        while (next != ':') {
-            inStream.get(next);
-            int k = 0;
-            while (next != ',') {
                 inStream.get(next);
+            }
+            numTypes++;
+            inStream.get(next);
+        }
+        inStream.get(next);
+        inStream.get(next);
+        while (next != '\n') {
+            int k = 0;
+            while ((next != ',') && (next != ':')) {
                 factor[numFactors][k] = next;
                 k++;
+                inStream.get(next);
             }
             factor[numFactors][k] = '\0';
-            atof(factor[numFactors]);
+            //atof(factor[numFactors]);
             numFactors++;
+            inStream.get(next);
         }
+        inStream.get(next);
     }
     return;
 }
@@ -268,12 +280,14 @@ void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20], d
 void typeList(char typeUnit[][20], int numTypes) {
     cout << "What is your unit type? (Type the corresponding number and then press return)\n";
     int k = 0;
-    for (int i = 1; i <= numTypes; i++) {
+    int i = 1;
+    while (i <= 3) {
         cout << i << ". ";
         while (typeUnit[i-1][k] != '\0') {
             cout << typeUnit[i-1][k];
             k++;
         }
+        i++;
         cout << "\n";
     }
     return;
