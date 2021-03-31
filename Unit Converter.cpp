@@ -3,7 +3,7 @@
 // Email Address: rnscheffer@my.milligan.edu
 // Description: Program to convert measurements between units.
 // Assignment: Term Project
-// Last Changed: March 29, 2021
+// Last Changed: March 30, 2021
 
 #include <iostream>
 #include <fstream>
@@ -132,12 +132,12 @@ int main()
 
             cout << "Is this correct? (Type 1 for yes or 0 for no and then press return)\n";
             cin >> confirmation;
-            if ((confirmation == '0') && (confirmation == 'n'))
+            if ((confirmation == '0') || (confirmation == 'n'))
                 cout << "\nLet's try again. \n";
             else
                 cout << "Great! Let's continue.\n";
         } 
-        while ((confirmation == '0') && (confirmation == 'n'));
+        while ((confirmation == '0') || (confirmation == 'n'));
         // This loops back to line 90 to input the units again.
 
         cout << "\nWhat is the value of your original measurement? (Enter and then press return)\n";
@@ -163,10 +163,10 @@ int main()
         cout << "Would you like to convert another measurement?"
             << " (Type 1 for yes or 0 for no and then press return\n";
         cin >> again;
-        if ((again == '1') && (again == 'y'))
+        if ((again == '1') || (again == 'y'))
             cout << "Let's start at the beginning. \n\n";
     }
-    while ((again == '1') && (again == 'y'));
+    while ((again == '1') || (again == 'y'));
     // This loops back to line 104 to completely restart the program.
 
     inStream.close();
