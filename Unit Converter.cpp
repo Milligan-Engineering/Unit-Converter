@@ -3,7 +3,7 @@
 // Email Address: rnscheffer@my.milligan.edu
 // Description: Program to convert measurements between units.
 // Assignment: Term Project
-// Last Changed: March 30, 2021
+// Last Changed: April 6, 2021
 
 #include <iostream>
 #include <fstream>
@@ -12,7 +12,7 @@
 #include <cstdlib>
 using namespace std;
 
-void listPrint(char unit[][10][20], int numUnits, int numTypes, int unitType);
+void getOriginal(char unit[][10][20], int numUnits, int& originalUnit, int unitType);
 //Preconditions: the unit names are already stored in the array unitName[3][3]
 //      and the user inputs typeUnit of 1 for length, 2 for volume, or 3 for energy;
 //      in this function, typeUnit-1 is the first index in the array, and 
@@ -21,7 +21,7 @@ void listPrint(char unit[][10][20], int numUnits, int numTypes, int unitType);
 //      by printing the array unitName[typeUnit-1][0-2]
 //      or says "Invalid input" if typeUnit is not 1, 2, or 3.
 
-void listPrintUnit(char unit[][10][20], int numUnits, int originalUnit, int typeUnit);
+void getFinal(char unit[][10][20], int numUnits, int& finalUnit, int unitType);
 //Preconditions: the unit names are already stored in the array unitName[3][3],
 //      user inputs typeUnit of 1 for length, 2 for volume, or 3 for energy,
 //      and the user inputs unit[0] of 1, 2, or 3 based on what they want;
@@ -31,20 +31,11 @@ void listPrintUnit(char unit[][10][20], int numUnits, int originalUnit, int type
 //      by printing the array unitName[typeUnit-1][0-2]
 //      or says "Invalid input" if unit[0] is not 1, 2, or 3.
 
-int decimalPlaceInfo(int decimalPlace);
-//Preconditions: the user inputs a value for decimalPlace between 0 and 9
-//Postconditions: alters decimalPlace when user inputs value
-//      that is out of range.
-
-void decimalPlaceComments(int decimalPlace);
-//Preconditions: the user inputs a value for decimalPlace between 0 and 9
-//Postconditions: explains alteration from decimalPlaceInfo function.
-
-void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20], double conversion[][10][10], int numTypes, int numUnits, int numFactors);
+void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20], double conversion[][3][3], int numTypes, int numUnits, int numFactors);
 //Preconditions: the infile.txt has a list of type of units and numTypes is initialized to 0.
 //Postconditions: assigns everything in infile.txt to arrays for typeUnit, unit, and conversion.
 
-void typeList(char typeUnit[][20], int numTypes);
+void getType(char typeUnit[][20], int numTypes, int& unitType);
 //Preconditions: the typeUnit array was filled in the assignArray function and 
 //      numTypes was determined in the assignArray function as well.
 //Postconditions: outputs a list of unit types based on the typeUnit array.
@@ -55,23 +46,34 @@ struct UnitInfo
     double value;
 };
 
+class Decimal {
+public:
+    string getName();
+    void setName();
+    int getDecimalPlace();
+    void setDecimalPlace();
+private:
+    string Name;
+    int decimalPlace;
+};
+
 int main()
 {
-    string Name;
-    int decimalPlace, unitType;
+    Decimal program;
+    int unitType;
     char confirmation, again;
     UnitInfo original, final;
     int numTypes = 0, numUnits = 0, numFactors = 0;
     char typeUnit[10][20];
     char unit[10][10][20];
-    double conversion[10][10][10];
+    double conversion[3][3][3] = { 1.0000e0,3.2808e0,6.2137e-4,3.0480e-1,1.0000e0,1.8939e-4,1.6093e3,5.2800e3,1.0000e0,1.0000e0,1.0000e3,2.6417e2,1.0000e-3,1.0000e0,2.6417e-1,3.7854e-3,3.7854e0,1.0000e0,1.0000e0,2.3901e-1,7.3756e-1,4.1840e0,1.0000e0,3.0860e0,1.3558e0,3.2405e-1,1.0000e0 };
 
     ifstream inStream;
     ofstream outStream;
 
     cout << "Unit Converter\n";
-    cout << "What is your name? (Enter your name and then press return) \n";
-    cin >> Name;
+    program.setName();
+    cout << "Hi, " << program.getName() << "!\n";
 
     inStream.open("infile.txt");
     if (inStream.fail()) {
@@ -88,44 +90,18 @@ int main()
     // This do-while statement allows the program to start over
     // if the user so chooses to convert another measurement. 
     do {
-
-        cout << "\n" << Name << ", how many decimal places do you want in your conversion? "
-            << "(Enter a number between 0 and 9 and then press return) \n";
-        cin >> decimalPlace;
-        decimalPlaceComments(decimalPlace);
-        decimalPlace = decimalPlaceInfo(decimalPlace);
-
-        cout << "\nYou are going to have " << ++decimalPlace << " decimal places. \n\n";
+        program.setDecimalPlace();
         cout.setf(ios::fixed);
         cout.setf(ios::showpoint);
-        cout.precision(decimalPlace);
+        cout.precision(program.getDecimalPlace());
 
         // This do-while statement allows the user to input their units again in case they messed up.
         do {
 
             assignArray(inStream, typeUnit, unit, conversion, numTypes, numUnits, numFactors);
-            typeList(typeUnit, numTypes);
-
-            //This do-while statement allows users to input their unit type again if they messed up.
-            do {
-                cin >> unitType;
-                listPrint(unit, numUnits, numTypes, unitType);
-            } while ((unitType < 1) && (unitType > numTypes));
-            
-            //This do-while statement allows users to input their 
-            //original unit again if they messed up.
-            do {
-                cin >> original.unit;
-                listPrintUnit(unit, numUnits, original.unit, unitType);
-            } while ((original.unit < 1) && (original.unit > numUnits));
-            
-            //This do-while statement allows users to input their
-            //converted unit again if they messed up
-            do {
-                cin >> final.unit;
-                if ((final.unit < 1) && (final.unit > numUnits))
-                    cout << "Invalid input. Try again. \n";
-            } while ((final.unit < 1) && (final.unit > numUnits));
+            getType(typeUnit, numTypes, unitType);
+            getOriginal(unit, numUnits, original.unit, unitType);
+            getFinal(unit, numUnits, final.unit, unitType);
 
             cout << "\nYou are converting from " << unit[unitType - 1][original.unit - 1]
                 << " to " << unit[unitType - 1][final.unit - 1] << ".\n";
@@ -159,7 +135,7 @@ int main()
             << " is equivalent to " << final.value << " " 
             << unit[unitType - 1][final.unit - 1] << ".\n";
         
-        cout << "\n" << Name << ", thank you for using the Unit Converter!\n";
+        cout << "\n" << program.getName() << ", thank you for using the Unit Converter!\n";
         cout << "Would you like to convert another measurement?"
             << " (Type 1 for yes or 0 for no and then press return\n";
         cin >> again;
@@ -172,70 +148,49 @@ int main()
     inStream.close();
     outStream.close();
 
-    cout << "\nHave a great day, " << Name << "! Come back anytime. \n";
+    cout << "\nHave a great day, " << program.getName() << "! Come back anytime. \n";
 
     return 0;
 }
 
 
-void listPrint(char unit[][10][20], int numUnits, int numTypes, int unitType) {
-    int k = 0;
-    if ((unitType < 1) && (unitType > 3))
-        cout << "\nInvalid input. Try again.\n";
-    else {
-        for (int i = 1; i <= 3; i++) {
-            cout << i << ". ";
-                while (unit[unitType][i-1][k] != '\0') {
-                    cout << unit[unitType][i-1][k];
-                    k++;
-                }
-            cout << "\n";
-        }
-    }
+void getOriginal(char unit[][10][20], int numUnits, int& originalUnit, int unitType) {
+    do{
+        cout << "What is your original unit? (Type the corresponding number and then press return)\n";
+        for (int i = 1; i <= 3; i++)
+            cout << i << ". " << unit[unitType-1][i-1] << "\n";
+        cin >> originalUnit;
+        if ((originalUnit < 1) || (originalUnit > 3))
+            cout << "Invalid input. Please try again.\n";
+    } while ((originalUnit < 1) || (originalUnit > 3));
     return;
 }
 
-void listPrintUnit(char unit[][10][20], int numUnits, int originalUnit, int unitType) {
-    int k = 0;
-    if ((originalUnit < 1) && (originalUnit > 3))
-        cout << "\nInvalid input. Try again.\n";
-    else {
-        for (int i = 1; i <= 3; i++) {
-            cout << i << ". ";
-            while (unit[unitType][i-1][k] != '\0') {
-                cout << unit[unitType][i - 1][k];
-                k++;
-            }
-            numUnits++;
-            unitType++;
-            cout << "\n";
-        }
-    }
+void getFinal(char unit[][10][20], int numUnits, int& finalUnit, int unitType) {
+    do {
+        cout << "What is your converted unit? (Type the corresponding number and then press return)\n";
+        for (int i = 1; i <= 3; i++)
+            cout << i << ". " << unit[unitType - 1][i - 1] << "\n";
+        cin >> finalUnit;
+        if ((finalUnit < 1) || (finalUnit > 3))
+            cout << "Invalid input. Please try again.\n";
+    } while ((finalUnit < 1) || (finalUnit > 3));
     return;
 }
 
-int decimalPlaceInfo(int decimalPlace) {
+int decimalPlaceInfo(int& decimalPlace) {
     for (decimalPlace; decimalPlace < 0; decimalPlace = abs(decimalPlace));;
     for (decimalPlace; decimalPlace > 9; decimalPlace--);
     return(decimalPlace);
 }
 
-void decimalPlaceComments(int decimalPlace) {
-    if (decimalPlace < 0)
-        cout << "Cannot have negative decimal places. Changed to positive.\n";
-    if (abs(decimalPlace) > 9)
-        cout << "Cannot request more than 9 decimal places. Changed to 9.\n";
-    cout << "Added one for rounding accuracy.\n";
-    return;
-}
-
-void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20], double conversion[][10][10], int numTypes, int numUnits, int numFactors) {
+void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20], double conversion[][3][3], int numTypes, int numUnits, int numFactors) {
     char factor[30][10];
     char next;
 
     while (!inStream.eof()) {
         inStream.get(next);
-        while (next != ';') {
+        while ((next != ';') && (next != '\n')) {
             int i = 0;
             while (next != ',') {
                 typeUnit[numTypes][i] = next;
@@ -243,7 +198,8 @@ void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20], d
                 inStream.get(next);
             }
             typeUnit[numTypes][i] = '\0';
-            numUnits = -1;
+            numUnits = 0;
+            inStream.get(next);
             while ((next != 'n') && (next != '\n')) {
                 int j = 0;
                 while ((next != ',') && (next != '\\')) {
@@ -257,8 +213,8 @@ void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20], d
             }
             numTypes++;
             inStream.get(next);
+            inStream.get(next);
         }
-        inStream.get(next);
         inStream.get(next);
         while (next != '\n') {
             int k = 0;
@@ -277,18 +233,43 @@ void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20], d
     return;
 }
 
-void typeList(char typeUnit[][20], int numTypes) {
-    cout << "What is your unit type? (Type the corresponding number and then press return)\n";
-    int k = 0;
-    int i = 1;
-    while (i <= 3) {
-        cout << i << ". ";
-        while (typeUnit[i-1][k] != '\0') {
-            cout << typeUnit[i-1][k];
-            k++;
-        }
-        i++;
-        cout << "\n";
-    }
+void getType(char typeUnit[][20], int numTypes, int& unitType) {
+    do {
+        cout << "What is your unit type? (Type the corresponding number and then press return)\n";
+        for (int i = 1; i <= 3; i++)
+            cout << i << ". " << typeUnit[i - 1] << "\n";
+        cin >> unitType;
+        if ((unitType < 1) || (unitType > 3))
+            cout << "Invalid input. Please try again.\n";
+    } while ((unitType < 1) || (unitType > 3));
     return;
+}
+
+void Decimal::setDecimalPlace() {
+    cout << "\n" << Name << ", how many decimal places do you want in your conversion? "
+        << "(Enter a number between 0 and 9 and then press return) \n";
+    cin >> decimalPlace;
+    if (decimalPlace < 0)
+        cout << "Cannot have negative decimal places. Changed to positive.\n";
+    if (abs(decimalPlace) > 9)
+        cout << "Cannot request more than 9 decimal places. Changed to 9.\n";
+    for (decimalPlace; decimalPlace < 0; decimalPlace = abs(decimalPlace));;
+    for (decimalPlace; decimalPlace > 9; decimalPlace--);
+    cout << "Added one for rounding accuracy.\n";
+    cout << "\nYou are going to have " << ++decimalPlace << " decimal places. \n\n";
+    return;
+}
+
+int Decimal::getDecimalPlace() {
+    return(decimalPlace);
+}
+
+void Decimal::setName() {
+    cout << "What is your name? (Type your name without any spaces and then press return.)\n";
+    cin >> Name;
+    return;
+}
+
+string Decimal::getName() {
+    return(Name);
 }
