@@ -13,32 +13,33 @@
 using namespace std;
 
 void getOriginal(char unit[][10][20], int numUnits, int& originalUnit, int unitType);
-//Preconditions: the unit names are already stored in the array unitName[3][3]
-//      and the user inputs typeUnit of 1 for length, 2 for volume, or 3 for energy;
-//      in this function, typeUnit-1 is the first index in the array, and 
-//      numTypes is the size of the first index of the array.
-//Postconditions: shows options for unit[0] based on typeUnit 
-//      by printing the array unitName[typeUnit-1][0-2]
-//      or says "Invalid input" if typeUnit is not 1, 2, or 3.
+//Preconditions: the unit names are already stored in the array unit,
+//      and the user inputted typeUnit; in this function, typeUnit-1 is the first index 
+//      in the array, and numTypes is the size of the second index of the array.
+//Postconditions: shows options for original.unit based on typeUnit 
+//      by printing the array unit; the user inputs 1, 2, or 3 for original.unit,
+//      or the program says "Invalid input" if original.unit is not 1, 2, or 3.
 
 void getFinal(char unit[][10][20], int numUnits, int& finalUnit, int unitType);
-//Preconditions: the unit names are already stored in the array unitName[3][3],
-//      user inputs typeUnit of 1 for length, 2 for volume, or 3 for energy,
-//      and the user inputs unit[0] of 1, 2, or 3 based on what they want;
-//      in this function, typeUnit-1 is the first index in the array, and
-//      numTypes is the first index of the array.
-//Postconditions: shows options for unit[1] based on typeUnit
-//      by printing the array unitName[typeUnit-1][0-2]
-//      or says "Invalid input" if unit[0] is not 1, 2, or 3.
+//Preconditions: the unit names are already stored in the array unit,
+//      and the user inputted typeUnit, in this function, typeUnit-1 is the first index 
+//      in the array, and numTypes is the size of the second index of the array.
+//Postconditions: shows options for final.unit based on typeUnit
+//      by printing the array unit; the user inputs 1, 2, or 3 for final.unit,
+//      or the program says "Invalid input" if final.unit is not 1, 2, or 3.
 
-void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20], const double conversion[][3][3], int& numTypes, int& numUnits, int numFactors);
-//Preconditions: the infile.txt has a list of type of units and numTypes is initialized to 0.
-//Postconditions: assigns everything in infile.txt to arrays for typeUnit, unit, and conversion.
+void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20], 
+    double conversion[][3][3], int& numTypes, int& numUnits, int numFactors);
+//Preconditions: the infile.txt has a list of unit types, unit options, and conversion factors.
+//Postconditions: assigns everything in infile.txt to arrays for typeUnit, unit, and conversion,
+//      and counts numTypes, numUnits, and numFactors.
 
 void getType(char typeUnit[][20], int numTypes, int& unitType);
 //Preconditions: the typeUnit array was filled in the assignArray function and 
 //      numTypes was determined in the assignArray function as well.
-//Postconditions: outputs a list of unit types based on the typeUnit array.
+//Postconditions: outputs a list of unit types based on the typeUnit array;
+//      the user inputs 1, 2, or 3 for unitType, or the program says "Invalid input"
+//      if unitType is not 1, 2, or 3.
 
 struct UnitInfo
 {
@@ -48,13 +49,29 @@ struct UnitInfo
 
 class Decimal {
 public:
-    string getName();
+    Decimal();
+    //Preconditions: none
+    //Postconditions: default constructor
+
     void setName();
-    int getDecimalPlace();
+    //Preconditions: none
+    //Postconditions: the user inputs Name.
+
+    string getName();
+    //Preconditions: Name already set in setName function.
+    //Postconditions: Name outputted into the program.
+
     void setDecimalPlace();
+    //Preconditions: none
+    //Postconditions: the user inputs decimalPlace and validates this input.
+
+    int getDecimalPlace();
+    //Preconditions: decimalPlace already set in setDecimalPlace function.
+    //Postconditions: decimalPlace outputted into the program.
+
 private:
     string Name;
-    int decimalPlace;
+    int decimalPlace = 0;
 };
 
 int main()
@@ -66,7 +83,7 @@ int main()
     int numTypes = 0, numUnits = 0, numFactors = 0;
     char typeUnit[10][20];
     char unit[10][10][20];
-    const double conversion[3][3][3] = { 1.0000e0,3.2808e0,6.2137e-4,3.0480e-1,1.0000e0,1.8939e-4,1.6093e3,5.2800e3,1.0000e0,1.0000e0,1.0000e3,2.6417e2,1.0000e-3,1.0000e0,2.6417e-1,3.7854e-3,3.7854e0,1.0000e0,1.0000e0,2.3901e-1,7.3756e-1,4.1840e0,1.0000e0,3.0860e0,1.3558e0,3.2405e-1,1.0000e0 };
+    double conversion[3][3][3];
 
     ifstream inStream;
     ofstream outStream;
@@ -87,6 +104,8 @@ int main()
         exit(1);
     }
 
+    assignArray(inStream, typeUnit, unit, conversion, numTypes, numUnits, numFactors);
+
     // This do-while statement allows the program to start over
     // if the user so chooses to convert another measurement. 
     do {
@@ -98,7 +117,6 @@ int main()
         // This do-while statement allows the user to input their units again in case they messed up.
         do {
 
-            assignArray(inStream, typeUnit, unit, conversion, numTypes, numUnits, numFactors);
             getType(typeUnit, numTypes, unitType);
             getOriginal(unit, numUnits, original.unit, unitType);
             getFinal(unit, numUnits, final.unit, unitType);
@@ -127,16 +145,10 @@ int main()
             } while ((confirmation != 'Y') && (confirmation != 'y') && (confirmation != 'N') && (confirmation != 'n'));
         } 
         while ((confirmation == 'N') || (confirmation == 'n'));
-        // This loops back to line 90 to input the units again.
+        // This loops back to line 111 to input the units again.
 
         cout << "\nWhat is the value of your original measurement? (Enter and then press return)\n";
         cin >> original.value;
-
-        // Each number is assigned to a type or unit as follows:
-        // Unit Type: 1 = length, 2 = volume, 3 = energy
-        // Length Units: 1 = meters, 2 = feet, 3 = miles
-        // Volume Units: 1 = cubic meters, 2 = liters, 3 = gallons
-        // Energy Units: 1 = joules, 2 = calories, 3 = foot-pounds
 
         final.value = original.value * conversion[unitType - 1][original.unit - 1][final.unit - 1];
         
@@ -144,7 +156,7 @@ int main()
             << " is equivalent to " << final.value << " " 
             << unit[unitType - 1][final.unit - 1] << ".\n";
 
-        outStream << "\n" << original.value << " " << unit[unitType - 1][original.unit - 1]
+        outStream << original.value << " " << unit[unitType - 1][original.unit - 1]
             << " is equivalent to " << final.value << " " 
             << unit[unitType - 1][final.unit - 1] << ".\n";
         
@@ -170,7 +182,7 @@ int main()
         } while ((again != 'Y') && (again != 'y') && (again != 'N') && (again != 'n'));
     }
     while ((again == 'Y') || (again == 'y'));
-    // This loops back to line 104 to completely restart the program.
+    // This loops back to line 118 to completely restart the program.
 
     inStream.close();
     outStream.close();
@@ -183,25 +195,25 @@ int main()
 
 void getOriginal(char unit[][10][20], int numUnits, int& originalUnit, int unitType) {
     do{
-        cout << "What is your original unit? (Type the corresponding number and then press return)\n";
+        cout << "\nWhat is your original unit? (Type the corresponding number and then press return)\n";
         for (int i = 1; i <= numUnits; i++)
             cout << i << ". " << unit[unitType-1][i-1] << "\n";
         cin >> originalUnit;
-        if ((originalUnit < 1) || (originalUnit > 3))
+        if ((originalUnit < 1) || (originalUnit > numUnits))
             cout << "Invalid input. Please try again.\n";
-    } while ((originalUnit < 1) || (originalUnit > 3));
+    } while ((originalUnit < 1) || (originalUnit > numUnits));
     return;
 }
 
 void getFinal(char unit[][10][20], int numUnits, int& finalUnit, int unitType) {
     do {
-        cout << "What is your converted unit? (Type the corresponding number and then press return)\n";
+        cout << "\nWhat is your converted unit? (Type the corresponding number and then press return)\n";
         for (int i = 1; i <= numUnits; i++)
             cout << i << ". " << unit[unitType - 1][i - 1] << "\n";
         cin >> finalUnit;
-        if ((finalUnit < 1) || (finalUnit > 3))
+        if ((finalUnit < 1) || (finalUnit > numUnits))
             cout << "Invalid input. Please try again.\n";
-    } while ((finalUnit < 1) || (finalUnit > 3));
+    } while ((finalUnit < 1) || (finalUnit > numUnits));
     return;
 }
 
@@ -211,7 +223,8 @@ int decimalPlaceInfo(int& decimalPlace) {
     return(decimalPlace);
 }
 
-void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20], const double conversion[][3][3], int& numTypes, int& numUnits, int numFactors) {
+void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20], 
+    double conversion[][3][3], int& numTypes, int& numUnits, int numFactors) {
     char factor[30][10];
     char next;
 
@@ -251,25 +264,31 @@ void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20], c
                 inStream.get(next);
             }
             factor[numFactors][k] = '\0';
-            double Factor[30]; 
-            Factor[numFactors] = atof(factor[numFactors]);
             numFactors++;
             inStream.get(next);
         }
         inStream.get(next);
+    }
+    int z = 0;
+    for (int w = 0; w < numTypes; w++) {
+        for (int x = 0; x < numUnits; x++) {
+            for (int y = 0; y < numUnits; y++) {
+                conversion[w][x][y] = atof(factor[z++]);
+            }
+        }
     }
     return;
 }
 
 void getType(char typeUnit[][20], int numTypes, int& unitType) {
     do {
-        cout << "What is your unit type? (Type the corresponding number and then press return)\n";
+        cout << "\nWhat is your unit type? (Type the corresponding number and then press return)\n";
         for (int i = 1; i <= numTypes; i++)
             cout << i << ". " << typeUnit[i - 1] << "\n";
         cin >> unitType;
-        if ((unitType < 1) || (unitType > 3))
+        if ((unitType < 1) || (unitType > numTypes))
             cout << "Invalid input. Please try again.\n";
-    } while ((unitType < 1) || (unitType > 3));
+    } while ((unitType < 1) || (unitType > numTypes));
     return;
 }
 
@@ -300,4 +319,8 @@ void Decimal::setName() {
 
 string Decimal::getName() {
     return(Name);
+}
+
+Decimal::Decimal() {
+    return;
 }
