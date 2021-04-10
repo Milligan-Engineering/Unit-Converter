@@ -3,7 +3,7 @@
 // Email Address: rnscheffer@my.milligan.edu
 // Description: Program to convert measurements between units.
 // Assignment: Term Project
-// Last Changed: April 6, 2021
+// Last Changed: April 10, 2021
 
 #include <iostream>
 #include <fstream>
@@ -31,7 +31,7 @@ void getFinal(char unit[][10][20], int numUnits, int& finalUnit, int unitType);
 //      by printing the array unitName[typeUnit-1][0-2]
 //      or says "Invalid input" if unit[0] is not 1, 2, or 3.
 
-void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20], double conversion[][3][3], int numTypes, int numUnits, int numFactors);
+void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20], const double conversion[][3][3], int& numTypes, int& numUnits, int numFactors);
 //Preconditions: the infile.txt has a list of type of units and numTypes is initialized to 0.
 //Postconditions: assigns everything in infile.txt to arrays for typeUnit, unit, and conversion.
 
@@ -66,7 +66,7 @@ int main()
     int numTypes = 0, numUnits = 0, numFactors = 0;
     char typeUnit[10][20];
     char unit[10][10][20];
-    double conversion[3][3][3] = { 1.0000e0,3.2808e0,6.2137e-4,3.0480e-1,1.0000e0,1.8939e-4,1.6093e3,5.2800e3,1.0000e0,1.0000e0,1.0000e3,2.6417e2,1.0000e-3,1.0000e0,2.6417e-1,3.7854e-3,3.7854e0,1.0000e0,1.0000e0,2.3901e-1,7.3756e-1,4.1840e0,1.0000e0,3.0860e0,1.3558e0,3.2405e-1,1.0000e0 };
+    const double conversion[3][3][3] = { 1.0000e0,3.2808e0,6.2137e-4,3.0480e-1,1.0000e0,1.8939e-4,1.6093e3,5.2800e3,1.0000e0,1.0000e0,1.0000e3,2.6417e2,1.0000e-3,1.0000e0,2.6417e-1,3.7854e-3,3.7854e0,1.0000e0,1.0000e0,2.3901e-1,7.3756e-1,4.1840e0,1.0000e0,3.0860e0,1.3558e0,3.2405e-1,1.0000e0 };
 
     ifstream inStream;
     ofstream outStream;
@@ -102,18 +102,31 @@ int main()
             getType(typeUnit, numTypes, unitType);
             getOriginal(unit, numUnits, original.unit, unitType);
             getFinal(unit, numUnits, final.unit, unitType);
+            do {
+                cout << "\nYou are converting from " << unit[unitType - 1][original.unit - 1]
+                    << " to " << unit[unitType - 1][final.unit - 1] << ".\n";
 
-            cout << "\nYou are converting from " << unit[unitType - 1][original.unit - 1]
-                << " to " << unit[unitType - 1][final.unit - 1] << ".\n";
-
-            cout << "Is this correct? (Type 1 for yes or 0 for no and then press return)\n";
-            cin >> confirmation;
-            if ((confirmation == '0') || (confirmation == 'n'))
-                cout << "\nLet's try again. \n";
-            else
-                cout << "Great! Let's continue.\n";
+                cout << "Is this correct? (Type Y for yes or N for no and then press return)\n";
+                cin >> confirmation;
+                switch (confirmation) {
+                case 'Y':
+                    cout << "Great! Let's continue.\n";
+                    break;
+                case 'y':
+                    cout << "Great! Let's continue.\n";
+                    break;
+                case 'N':
+                    cout << "\nLet's try again. \n";
+                    break;
+                case 'n':
+                    cout << "\nLet's try again. \n";
+                    break;
+                default:
+                    cout << "Invalid input. Let's try again.\n";
+                }
+            } while ((confirmation != 'Y') && (confirmation != 'y') && (confirmation != 'N') && (confirmation != 'n'));
         } 
-        while ((confirmation == '0') || (confirmation == 'n'));
+        while ((confirmation == 'N') || (confirmation == 'n'));
         // This loops back to line 90 to input the units again.
 
         cout << "\nWhat is the value of your original measurement? (Enter and then press return)\n";
@@ -136,13 +149,27 @@ int main()
             << unit[unitType - 1][final.unit - 1] << ".\n";
         
         cout << "\n" << program.getName() << ", thank you for using the Unit Converter!\n";
-        cout << "Would you like to convert another measurement?"
-            << " (Type 1 for yes or 0 for no and then press return\n";
-        cin >> again;
-        if ((again == '1') || (again == 'y'))
-            cout << "Let's start at the beginning. \n\n";
+        do {
+            cout << "Would you like to convert another measurement?"
+                << " (Type Y for yes or N for no and then press return\n";
+            cin >> again;
+            switch (again) {
+            case 'Y':
+                cout << "Let's start at the beginning. \n\n";
+                break;
+            case 'y':
+                cout << "Let's start at the beginning. \n\n";
+                break;
+            case 'N':
+                break;
+            case 'n':
+                break;
+            default:
+                cout << "Invalid input. Let's try again.\n";
+            }
+        } while ((again != 'Y') && (again != 'y') && (again != 'N') && (again != 'n'));
     }
-    while ((again == '1') || (again == 'y'));
+    while ((again == 'Y') || (again == 'y'));
     // This loops back to line 104 to completely restart the program.
 
     inStream.close();
@@ -157,7 +184,7 @@ int main()
 void getOriginal(char unit[][10][20], int numUnits, int& originalUnit, int unitType) {
     do{
         cout << "What is your original unit? (Type the corresponding number and then press return)\n";
-        for (int i = 1; i <= 3; i++)
+        for (int i = 1; i <= numUnits; i++)
             cout << i << ". " << unit[unitType-1][i-1] << "\n";
         cin >> originalUnit;
         if ((originalUnit < 1) || (originalUnit > 3))
@@ -169,7 +196,7 @@ void getOriginal(char unit[][10][20], int numUnits, int& originalUnit, int unitT
 void getFinal(char unit[][10][20], int numUnits, int& finalUnit, int unitType) {
     do {
         cout << "What is your converted unit? (Type the corresponding number and then press return)\n";
-        for (int i = 1; i <= 3; i++)
+        for (int i = 1; i <= numUnits; i++)
             cout << i << ". " << unit[unitType - 1][i - 1] << "\n";
         cin >> finalUnit;
         if ((finalUnit < 1) || (finalUnit > 3))
@@ -184,7 +211,7 @@ int decimalPlaceInfo(int& decimalPlace) {
     return(decimalPlace);
 }
 
-void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20], double conversion[][3][3], int numTypes, int numUnits, int numFactors) {
+void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20], const double conversion[][3][3], int& numTypes, int& numUnits, int numFactors) {
     char factor[30][10];
     char next;
 
@@ -224,7 +251,8 @@ void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20], d
                 inStream.get(next);
             }
             factor[numFactors][k] = '\0';
-            //atof(factor[numFactors]);
+            double Factor[30]; 
+            Factor[numFactors] = atof(factor[numFactors]);
             numFactors++;
             inStream.get(next);
         }
@@ -236,7 +264,7 @@ void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20], d
 void getType(char typeUnit[][20], int numTypes, int& unitType) {
     do {
         cout << "What is your unit type? (Type the corresponding number and then press return)\n";
-        for (int i = 1; i <= 3; i++)
+        for (int i = 1; i <= numTypes; i++)
             cout << i << ". " << typeUnit[i - 1] << "\n";
         cin >> unitType;
         if ((unitType < 1) || (unitType > 3))
