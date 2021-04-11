@@ -114,6 +114,10 @@ int main()
         cout.setf(ios::showpoint);
         cout.precision(program.getDecimalPlace());
 
+        outStream.setf(ios::fixed);
+        outStream.setf(ios::showpoint);
+        outStream.precision(program.getDecimalPlace());
+
         // This do-while statement allows the user to input their units again in case they messed up.
         do {
 
@@ -145,7 +149,7 @@ int main()
             } while ((confirmation != 'Y') && (confirmation != 'y') && (confirmation != 'N') && (confirmation != 'n'));
         } 
         while ((confirmation == 'N') || (confirmation == 'n'));
-        // This loops back to line 118 to input the units again.
+        // This loops back to line 127 to input the units again.
 
         cout << "\nWhat is the value of your original measurement? (Enter and then press return)\n";
         cin >> original.value;
@@ -182,7 +186,7 @@ int main()
         } while ((again != 'Y') && (again != 'y') && (again != 'N') && (again != 'n'));
     }
     while ((again == 'Y') || (again == 'y'));
-    // This loops back to line 111 to completely restart the program.
+    // This loops back to line 122 to completely restart the program.
 
     inStream.close();
     outStream.close();
