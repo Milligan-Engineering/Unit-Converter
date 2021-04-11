@@ -12,7 +12,7 @@
 #include <cstdlib>
 using namespace std;
 
-void getOriginal(char unit[][10][20], int numUnits, int& originalUnit, int unitType);
+void listPrint(const char unit[][10][20], int numUnits, int& originalUnit, int unitType);
 //Preconditions: the unit names are already stored in the array unit,
 //      and the user inputted typeUnit; in this function, typeUnit-1 is the first index 
 //      in the array, and numTypes is the size of the second index of the array.
@@ -20,7 +20,7 @@ void getOriginal(char unit[][10][20], int numUnits, int& originalUnit, int unitT
 //      by printing the array unit; the user inputs 1, 2, or 3 for original.unit,
 //      or the program says "Invalid input" if original.unit is not 1, 2, or 3.
 
-void getFinal(char unit[][10][20], int numUnits, int& finalUnit, int unitType);
+void listPrint(int numUnits, const char unit[][10][20], int& finalUnit, int unitType);
 //Preconditions: the unit names are already stored in the array unit,
 //      and the user inputted typeUnit, in this function, typeUnit-1 is the first index 
 //      in the array, and numTypes is the size of the second index of the array.
@@ -29,12 +29,12 @@ void getFinal(char unit[][10][20], int numUnits, int& finalUnit, int unitType);
 //      or the program says "Invalid input" if final.unit is not 1, 2, or 3.
 
 void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20], 
-    double conversion[][3][3], int& numTypes, int& numUnits, int numFactors);
+    double conversion[][10][10], int& numTypes, int& numUnits, int numFactors);
 //Preconditions: the infile.txt has a list of unit types, unit options, and conversion factors.
 //Postconditions: assigns everything in infile.txt to arrays for typeUnit, unit, and conversion,
 //      and counts numTypes, numUnits, and numFactors.
 
-void getType(char typeUnit[][20], int numTypes, int& unitType);
+void listPrint(const char typeUnit[][20], int numTypes, int& unitType);
 //Preconditions: the typeUnit array was filled in the assignArray function and 
 //      numTypes was determined in the assignArray function as well.
 //Postconditions: outputs a list of unit types based on the typeUnit array;
@@ -83,7 +83,7 @@ int main()
     int numTypes = 0, numUnits = 0, numFactors = 0;
     char typeUnit[10][20];
     char unit[10][10][20];
-    double conversion[3][3][3];
+    double conversion[10][10][10];
 
     ifstream inStream;
     ofstream outStream;
@@ -117,9 +117,9 @@ int main()
         // This do-while statement allows the user to input their units again in case they messed up.
         do {
 
-            getType(typeUnit, numTypes, unitType);
-            getOriginal(unit, numUnits, original.unit, unitType);
-            getFinal(unit, numUnits, final.unit, unitType);
+            listPrint(typeUnit, numTypes, unitType);
+            listPrint(unit, numUnits, original.unit, unitType);
+            listPrint(numUnits, unit, final.unit, unitType);
             do {
                 cout << "\nYou are converting from " << unit[unitType - 1][original.unit - 1]
                     << " to " << unit[unitType - 1][final.unit - 1] << ".\n";
@@ -145,7 +145,7 @@ int main()
             } while ((confirmation != 'Y') && (confirmation != 'y') && (confirmation != 'N') && (confirmation != 'n'));
         } 
         while ((confirmation == 'N') || (confirmation == 'n'));
-        // This loops back to line 111 to input the units again.
+        // This loops back to line 118 to input the units again.
 
         cout << "\nWhat is the value of your original measurement? (Enter and then press return)\n";
         cin >> original.value;
@@ -182,7 +182,7 @@ int main()
         } while ((again != 'Y') && (again != 'y') && (again != 'N') && (again != 'n'));
     }
     while ((again == 'Y') || (again == 'y'));
-    // This loops back to line 118 to completely restart the program.
+    // This loops back to line 111 to completely restart the program.
 
     inStream.close();
     outStream.close();
@@ -193,19 +193,20 @@ int main()
 }
 
 
-void getOriginal(char unit[][10][20], int numUnits, int& originalUnit, int unitType) {
-    do{
+void listPrint(const char unit[][10][20], int numUnits, int& originalUnit, int unitType) {
+    do {
         cout << "\nWhat is your original unit? (Type the corresponding number and then press return)\n";
         for (int i = 1; i <= numUnits; i++)
             cout << i << ". " << unit[unitType-1][i-1] << "\n";
         cin >> originalUnit;
         if ((originalUnit < 1) || (originalUnit > numUnits))
             cout << "Invalid input. Please try again.\n";
+        else
+            return;
     } while ((originalUnit < 1) || (originalUnit > numUnits));
-    return;
 }
 
-void getFinal(char unit[][10][20], int numUnits, int& finalUnit, int unitType) {
+void listPrint(int numUnits, const char unit[][10][20], int& finalUnit, int unitType) {
     do {
         cout << "\nWhat is your converted unit? (Type the corresponding number and then press return)\n";
         for (int i = 1; i <= numUnits; i++)
@@ -213,18 +214,13 @@ void getFinal(char unit[][10][20], int numUnits, int& finalUnit, int unitType) {
         cin >> finalUnit;
         if ((finalUnit < 1) || (finalUnit > numUnits))
             cout << "Invalid input. Please try again.\n";
+        else
+            return;
     } while ((finalUnit < 1) || (finalUnit > numUnits));
-    return;
-}
-
-int decimalPlaceInfo(int& decimalPlace) {
-    for (decimalPlace; decimalPlace < 0; decimalPlace = abs(decimalPlace));;
-    for (decimalPlace; decimalPlace > 9; decimalPlace--);
-    return(decimalPlace);
 }
 
 void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20], 
-    double conversion[][3][3], int& numTypes, int& numUnits, int numFactors) {
+    double conversion[][10][10], int& numTypes, int& numUnits, int numFactors) {
     char factor[30][10];
     char next;
 
@@ -280,7 +276,7 @@ void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20],
     return;
 }
 
-void getType(char typeUnit[][20], int numTypes, int& unitType) {
+void listPrint(const char typeUnit[][20], int numTypes, int& unitType) {
     do {
         cout << "\nWhat is your unit type? (Type the corresponding number and then press return)\n";
         for (int i = 1; i <= numTypes; i++)
@@ -303,7 +299,7 @@ void Decimal::setDecimalPlace() {
     for (decimalPlace; decimalPlace < 0; decimalPlace = abs(decimalPlace));;
     for (decimalPlace; decimalPlace > 9; decimalPlace--);
     cout << "Added one for rounding accuracy.\n";
-    cout << "\nYou are going to have " << ++decimalPlace << " decimal places. \n\n";
+    cout << "\nYou are going to have " << ++decimalPlace << " decimal places. \n";
     return;
 }
 
