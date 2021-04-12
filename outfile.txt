@@ -1,2 +1,1 @@
-55.000000 feet is equivalent to 16.764000 meters.
-34.00000 liters is equivalent to 8.98178 gallons.
+344.0000 foot-pounds is equivalent to 466.3952 joules.

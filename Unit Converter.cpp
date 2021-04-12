@@ -3,7 +3,7 @@
 // Email Address: rnscheffer@my.milligan.edu
 // Description: Program to convert measurements between units.
 // Assignment: Term Project
-// Last Changed: April 10, 2021
+// Last Changed: April 12, 2021
 
 #include <iostream>
 #include <fstream>
@@ -76,14 +76,15 @@ private:
 
 int main()
 {
+    const int arraySize = 10, numChar = 20;
     Decimal program;
     int unitType;
     char confirmation, again;
     UnitInfo original, final;
     int numTypes = 0, numUnits = 0, numFactors = 0;
-    char typeUnit[10][20];
-    char unit[10][10][20];
-    double conversion[10][10][10];
+    char typeUnit[arraySize][numChar];
+    char unit[arraySize][arraySize][numChar];
+    double conversion[arraySize][arraySize][arraySize];
 
     ifstream inStream;
     ofstream outStream;
@@ -149,7 +150,7 @@ int main()
             } while ((confirmation != 'Y') && (confirmation != 'y') && (confirmation != 'N') && (confirmation != 'n'));
         } 
         while ((confirmation == 'N') || (confirmation == 'n'));
-        // This loops back to line 127 to input the units again.
+        // This loops back to line 123 to input the units again.
 
         cout << "\nWhat is the value of your original measurement? (Enter and then press return)\n";
         cin >> original.value;
@@ -186,7 +187,7 @@ int main()
         } while ((again != 'Y') && (again != 'y') && (again != 'N') && (again != 'n'));
     }
     while ((again == 'Y') || (again == 'y'));
-    // This loops back to line 122 to completely restart the program.
+    // This loops back to line 112 to completely restart the program.
 
     inStream.close();
     outStream.close();
