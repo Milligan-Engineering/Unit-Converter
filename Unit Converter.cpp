@@ -171,7 +171,7 @@ int main()
 
 void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20],
     double conversion[][10][10], int& numTypes, int& numUnits, int numFactors) {
-    char factor[30][10];
+    char factor[50][10];
     char next;
 
     while (!inStream.eof()) {
