@@ -3,7 +3,7 @@
 // Email Address: rnscheffer@my.milligan.edu
 // Description: Program to convert measurements between units.
 // Assignment: Term Project
-// Last Changed: April 12, 2021
+// Last Changed: April 14, 2021
 
 #include <iostream>
 #include <fstream>
@@ -11,6 +11,19 @@
 #include <cmath>
 #include <cstdlib>
 using namespace std;
+
+void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20],
+    double conversion[][10][10], int& numTypes, int& numUnits, int numFactors);
+//Preconditions: the infile.txt has a list of unit types, unit options, and conversion factors.
+//Postconditions: assigns everything in infile.txt to arrays for typeUnit, unit, and conversion,
+//      and counts numTypes, numUnits, and numFactors.
+
+void listPrint(const char typeUnit[][20], int numTypes, int& unitType);
+//Preconditions: the typeUnit array was filled in the assignArray function and 
+//      numTypes was determined in the assignArray function as well.
+//Postconditions: outputs a list of unit types based on the typeUnit array;
+//      the user inputs 1, 2, or 3 for unitType, or the program says "Invalid input"
+//      if unitType is not 1, 2, or 3.
 
 void listPrint(const char unit[][10][20], int numUnits, int& originalUnit, int unitType);
 //Preconditions: the unit names are already stored in the array unit,
@@ -28,18 +41,13 @@ void listPrint(int numUnits, const char unit[][10][20], int& finalUnit, int unit
 //      by printing the array unit; the user inputs 1, 2, or 3 for final.unit,
 //      or the program says "Invalid input" if final.unit is not 1, 2, or 3.
 
-void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20], 
-    double conversion[][10][10], int& numTypes, int& numUnits, int numFactors);
-//Preconditions: the infile.txt has a list of unit types, unit options, and conversion factors.
-//Postconditions: assigns everything in infile.txt to arrays for typeUnit, unit, and conversion,
-//      and counts numTypes, numUnits, and numFactors.
+void getConfirmation(char& confirmation);
+//Preconditions: program asks if the unit statement is correct
+//Postconditions: gets confirmation and validates input for confirmation
 
-void listPrint(const char typeUnit[][20], int numTypes, int& unitType);
-//Preconditions: the typeUnit array was filled in the assignArray function and 
-//      numTypes was determined in the assignArray function as well.
-//Postconditions: outputs a list of unit types based on the typeUnit array;
-//      the user inputs 1, 2, or 3 for unitType, or the program says "Invalid input"
-//      if unitType is not 1, 2, or 3.
+void askAgain(char& again);
+//Preconditions: none
+//Postconditions: asks if the user wants to convert another unit, gets again, and validates again.
 
 struct UnitInfo
 {
@@ -122,35 +130,17 @@ int main()
         // This do-while statement allows the user to input their units again in case they messed up.
         do {
 
-            listPrint(typeUnit, numTypes, unitType);
-            listPrint(unit, numUnits, original.unit, unitType);
-            listPrint(numUnits, unit, final.unit, unitType);
+            listPrint(typeUnit, numTypes, unitType);//lists unit type
+            listPrint(unit, numUnits, original.unit, unitType);//lists original unit options
+            listPrint(numUnits, unit, final.unit, unitType);//lists final unit options
             do {
                 cout << "\nYou are converting from " << unit[unitType - 1][original.unit - 1]
                     << " to " << unit[unitType - 1][final.unit - 1] << ".\n";
-
-                cout << "Is this correct? (Type Y for yes or N for no and then press return)\n";
-                cin >> confirmation;
-                switch (confirmation) {
-                case 'Y':
-                    cout << "Great! Let's continue.\n";
-                    break;
-                case 'y':
-                    cout << "Great! Let's continue.\n";
-                    break;
-                case 'N':
-                    cout << "\nLet's try again. \n";
-                    break;
-                case 'n':
-                    cout << "\nLet's try again. \n";
-                    break;
-                default:
-                    cout << "Invalid input. Let's try again.\n";
-                }
+                getConfirmation(confirmation);
             } while ((confirmation != 'Y') && (confirmation != 'y') && (confirmation != 'N') && (confirmation != 'n'));
         } 
         while ((confirmation == 'N') || (confirmation == 'n'));
-        // This loops back to line 123 to input the units again.
+        // This loops back to line 131 to input the units again.
 
         cout << "\nWhat is the value of your original measurement? (Enter and then press return)\n";
         cin >> original.value;
@@ -166,28 +156,10 @@ int main()
             << unit[unitType - 1][final.unit - 1] << ".\n";
         
         cout << "\n" << program.getName() << ", thank you for using the Unit Converter!\n";
-        do {
-            cout << "Would you like to convert another measurement?"
-                << " (Type Y for yes or N for no and then press return\n";
-            cin >> again;
-            switch (again) {
-            case 'Y':
-                cout << "Let's start at the beginning. \n\n";
-                break;
-            case 'y':
-                cout << "Let's start at the beginning. \n\n";
-                break;
-            case 'N':
-                break;
-            case 'n':
-                break;
-            default:
-                cout << "Invalid input. Let's try again.\n";
-            }
-        } while ((again != 'Y') && (again != 'y') && (again != 'N') && (again != 'n'));
+        askAgain(again);//asks if user wants to convert another input
     }
     while ((again == 'Y') || (again == 'y'));
-    // This loops back to line 112 to completely restart the program.
+    // This loops back to line 120 to completely restart the program.
 
     inStream.close();
     outStream.close();
@@ -197,34 +169,7 @@ int main()
     return 0;
 }
 
-
-void listPrint(const char unit[][10][20], int numUnits, int& originalUnit, int unitType) {
-    do {
-        cout << "\nWhat is your original unit? (Type the corresponding number and then press return)\n";
-        for (int i = 1; i <= numUnits; i++)
-            cout << i << ". " << unit[unitType-1][i-1] << "\n";
-        cin >> originalUnit;
-        if ((originalUnit < 1) || (originalUnit > numUnits))
-            cout << "Invalid input. Please try again.\n";
-        else
-            return;
-    } while ((originalUnit < 1) || (originalUnit > numUnits));
-}
-
-void listPrint(int numUnits, const char unit[][10][20], int& finalUnit, int unitType) {
-    do {
-        cout << "\nWhat is your converted unit? (Type the corresponding number and then press return)\n";
-        for (int i = 1; i <= numUnits; i++)
-            cout << i << ". " << unit[unitType - 1][i - 1] << "\n";
-        cin >> finalUnit;
-        if ((finalUnit < 1) || (finalUnit > numUnits))
-            cout << "Invalid input. Please try again.\n";
-        else
-            return;
-    } while ((finalUnit < 1) || (finalUnit > numUnits));
-}
-
-void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20], 
+void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20],
     double conversion[][10][10], int& numTypes, int& numUnits, int numFactors) {
     char factor[30][10];
     char next;
@@ -293,6 +238,91 @@ void listPrint(const char typeUnit[][20], int numTypes, int& unitType) {
     return;
 }
 
+void listPrint(const char unit[][10][20], int numUnits, int& originalUnit, int unitType) {
+    do {
+        cout << "\nWhat is your original unit? (Type the corresponding number and then press return)\n";
+        for (int i = 1; i <= numUnits; i++)
+            cout << i << ". " << unit[unitType-1][i-1] << "\n";
+        cin >> originalUnit;
+        if ((originalUnit < 1) || (originalUnit > numUnits))
+            cout << "Invalid input. Please try again.\n";
+        else
+            return;
+    } while ((originalUnit < 1) || (originalUnit > numUnits));
+}
+
+void listPrint(int numUnits, const char unit[][10][20], int& finalUnit, int unitType) {
+    do {
+        cout << "\nWhat is your converted unit? (Type the corresponding number and then press return)\n";
+        for (int i = 1; i <= numUnits; i++)
+            cout << i << ". " << unit[unitType - 1][i - 1] << "\n";
+        cin >> finalUnit;
+        if ((finalUnit < 1) || (finalUnit > numUnits))
+            cout << "Invalid input. Please try again.\n";
+        else
+            return;
+    } while ((finalUnit < 1) || (finalUnit > numUnits));
+}
+
+void getConfirmation(char& confirmation) {
+    cout << "Is this correct? (Type Y for yes or N for no and then press return)\n";
+    cin >> confirmation;
+    switch (confirmation) {
+    case 'Y':
+        cout << "Great! Let's continue.\n";
+        break;
+    case 'y':
+        cout << "Great! Let's continue.\n";
+        break;
+    case 'N':
+        cout << "\nLet's try again. \n";
+        break;
+    case 'n':
+        cout << "\nLet's try again. \n";
+        break;
+    default:
+        cout << "Invalid input. Let's try again.\n";
+    }
+    return;
+}
+
+void askAgain(char& again) {
+    do {
+        cout << "Would you like to convert another measurement?"
+            << " (Type Y for yes or N for no and then press return\n";
+        cin >> again;
+        switch (again) {
+        case 'Y':
+            cout << "Let's start at the beginning. \n\n";
+            break;
+        case 'y':
+            cout << "Let's start at the beginning. \n\n";
+            break;
+        case 'N':
+            break;
+        case 'n':
+            break;
+        default:
+            cout << "Invalid input. Let's try again.\n";
+        }
+    } while ((again != 'Y') && (again != 'y') && (again != 'N') && (again != 'n'));
+    return;
+}
+
+Decimal::Decimal() {
+    return;
+}
+
+void Decimal::setName() {
+    cout << "What is your name? (Type your name without any spaces and then press return.)\n";
+    cin >> Name;
+    return;
+}
+
+string Decimal::getName() {
+    return(Name);
+}
+
 void Decimal::setDecimalPlace() {
     cout << "\n" << Name << ", how many decimal places do you want in your conversion? "
         << "(Enter a number between 0 and 9 and then press return) \n";
@@ -310,18 +340,4 @@ void Decimal::setDecimalPlace() {
 
 int Decimal::getDecimalPlace() {
     return(decimalPlace);
-}
-
-void Decimal::setName() {
-    cout << "What is your name? (Type your name without any spaces and then press return.)\n";
-    cin >> Name;
-    return;
-}
-
-string Decimal::getName() {
-    return(Name);
-}
-
-Decimal::Decimal() {
-    return;
 }
