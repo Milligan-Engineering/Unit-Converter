@@ -186,19 +186,20 @@ void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20],
             typeUnit[numTypes][i] = '\0';
             numUnits = 0;
             inStream.get(next);
-            while ((next != 'n') && (next != '\n')) {
+            while (next != '\n') {
                 int j = 0;
-                while ((next != ',') && (next != '\\')) {
+                while ((next != ',') && (next != '\n')) {
                     unit[numTypes][numUnits][j] = next;
                     j++;
                     inStream.get(next);
                 }
                 unit[numTypes][numUnits][j] = '\0';
                 numUnits++;
+                if (next == '\n')
+                    break;
                 inStream.get(next);
             }
             numTypes++;
-            inStream.get(next);
             inStream.get(next);
         }
         inStream.get(next);
