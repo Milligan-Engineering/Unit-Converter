@@ -3,7 +3,7 @@
 // Email Address: rnscheffer@my.milligan.edu
 // Description: Program to convert measurements between units.
 // Assignment: Term Project
-// Last Changed: April 15, 2021
+// Last Changed: April 17, 2021
 
 #include <iostream>
 #include <fstream>
@@ -294,7 +294,7 @@ void askAgain(char& again) {
             cout << "Let's start at the beginning. \n\n";
             break;
         case 'y':
-            cout << "Let's start at the beginning. \n\n";
+            cout << "Let's start at the beginning. \n";
             break;
         case 'N':
             break;
