@@ -1,2 +1,2 @@
-55.00000 slugs is equivalent to 1769.57000 pounds.
-33.00000 gallons is equivalent to 0.12492 cubic meters.
+34.0000 pounds is equivalent to 1.0568 slugs.
+3.00 miles is equivalent to 15840.00 feet.

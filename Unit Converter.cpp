@@ -3,7 +3,7 @@
 // Email Address: rnscheffer@my.milligan.edu
 // Description: Program to convert measurements between units.
 // Assignment: Term Project
-// Last Changed: April 17, 2021
+// Last Changed: April 23, 2021
 
 #include <iostream>
 #include <fstream>
@@ -14,16 +14,16 @@ using namespace std;
 
 void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20],
     double conversion[][10][10], int& numTypes, int& numUnits, int numFactors);
-//Preconditions: the infile.txt has a list of unit types, unit options, and conversion factors.
+//Preconditions: the infile.txt has a list of unit types, unit options, and conversion factors
 //Postconditions: assigns everything in infile.txt to arrays for typeUnit, unit, and conversion,
-//      and counts numTypes, numUnits, and numFactors.
+//      and counts numTypes, numUnits, and numFactors
 
 void listPrint(const char typeUnit[][20], int numTypes, int& unitType);
 //Preconditions: the typeUnit array was filled in the assignArray function and 
-//      numTypes was determined in the assignArray function as well.
+//      numTypes was determined in the assignArray function as well
 //Postconditions: outputs a list of unit types based on the typeUnit array;
 //      the user inputs 1, 2, or 3 for unitType, or the program says "Invalid input"
-//      if unitType is not 1, 2, or 3.
+//      if unitType is not 1, 2, or 3
 
 void listPrint(const char unit[][10][20], int numUnits, int& originalUnit, int unitType);
 //Preconditions: the unit names are already stored in the array unit,
@@ -31,23 +31,27 @@ void listPrint(const char unit[][10][20], int numUnits, int& originalUnit, int u
 //      in the array, and numTypes is the size of the second index of the array.
 //Postconditions: shows options for original.unit based on typeUnit 
 //      by printing the array unit; the user inputs 1, 2, or 3 for original.unit,
-//      or the program says "Invalid input" if original.unit is not 1, 2, or 3.
+//      or the program says "Invalid input" if original.unit is not 1, 2, or 3
 
 void listPrint(int numUnits, const char unit[][10][20], int& finalUnit, int unitType);
 //Preconditions: the unit names are already stored in the array unit,
 //      and the user inputted typeUnit, in this function, typeUnit-1 is the first index 
-//      in the array, and numTypes is the size of the second index of the array.
+//      in the array, and numTypes is the size of the second index of the array
 //Postconditions: shows options for final.unit based on typeUnit
 //      by printing the array unit; the user inputs 1, 2, or 3 for final.unit,
-//      or the program says "Invalid input" if final.unit is not 1, 2, or 3.
+//      or the program says "Invalid input" if final.unit is not 1, 2, or 3
 
 void getConfirmation(char& confirmation);
 //Preconditions: program asks if the unit statement is correct
 //Postconditions: gets confirmation and validates input for confirmation
 
 void askAgain(char& again);
-//Preconditions: none
-//Postconditions: asks if the user wants to convert another unit, gets again, and validates again.
+//Preconditions: again can be anything; again is manipulated in this function
+//Postconditions: asks if the user wants to convert another unit, gets again, and validates again
+
+char getAgain(char again);
+//Preconditions: again has been set in the askAgain function
+//Postconditions: outputs again into the program
 
 struct UnitInfo
 {
@@ -63,19 +67,19 @@ public:
 
     void setName();
     //Preconditions: none
-    //Postconditions: the user inputs Name.
+    //Postconditions: the user inputs Name
 
     string getName();
-    //Preconditions: Name already set in setName function.
-    //Postconditions: Name outputted into the program.
+    //Preconditions: Name already set in setName function
+    //Postconditions: Name outputted into the program
 
     void setDecimalPlace();
     //Preconditions: none
-    //Postconditions: the user inputs decimalPlace and validates this input.
+    //Postconditions: the user inputs decimalPlace and validates this input
 
     int getDecimalPlace();
-    //Preconditions: decimalPlace already set in setDecimalPlace function.
-    //Postconditions: decimalPlace outputted into the program.
+    //Preconditions: decimalPlace already set in setDecimalPlace function
+    //Postconditions: decimalPlace outputted into the program
 
 private:
     string Name;
@@ -155,8 +159,8 @@ int main()
         cout << "\n" << program.getName() << ", thank you for using the Unit Converter!\n";
         askAgain(again);//asks if user wants to convert another input
     }
-    while ((again == 'Y') || (again == 'y'));
-    // This loops back to line 118 to completely restart the program.
+    while ((getAgain(again) == 'Y') || (getAgain(again) == 'y'));
+    // This loops back to line 122 to completely restart the program.
 
     inStream.close();
     outStream.close();
@@ -305,6 +309,10 @@ void askAgain(char& again) {
         }
     } while ((again != 'Y') && (again != 'y') && (again != 'N') && (again != 'n'));
     return;
+}
+
+char getAgain(char again) {
+    return(again);
 }
 
 Decimal::Decimal() {
