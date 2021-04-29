@@ -14,32 +14,31 @@ using namespace std;
 
 void assignArray(ifstream& inStream, char typeUnit[][20], char unit[][10][20],
     double conversion[][10][10], int& numTypes, int& numUnits, int numFactors);
-//Preconditions: the infile.txt has a list of unit types, unit options, and conversion factors
+//Preconditions: the infile.txt has a list of unit types, unit options, and conversion factors;
+//      everything else is unitialized
 //Postconditions: assigns everything in infile.txt to arrays for typeUnit, unit, and conversion,
 //      and counts numTypes, numUnits, and numFactors
 
 void listPrint(const char typeUnit[][20], int numTypes, int& unitType);
-//Preconditions: the typeUnit array was filled in the assignArray function and 
-//      numTypes was determined in the assignArray function as well
+//Preconditions: the typeUnit array was filled in the assignArray function, 
+//      numTypes was determined in the assignArray function as well, and
+//      unitType does not need to be initialized
 //Postconditions: outputs a list of unit types based on the typeUnit array;
-//      the user inputs 1, 2, or 3 for unitType, or the program says "Invalid input"
-//      if unitType is not 1, 2, or 3
+//      the user inputs unitType and unitType is validated
 
 void listPrint(const char unit[][10][20], int numUnits, int& originalUnit, int unitType);
 //Preconditions: the unit names are already stored in the array unit,
 //      and the user inputted typeUnit; in this function, typeUnit-1 is the first index 
 //      in the array, and numTypes is the size of the second index of the array.
 //Postconditions: shows options for original.unit based on typeUnit 
-//      by printing the array unit; the user inputs 1, 2, or 3 for original.unit,
-//      or the program says "Invalid input" if original.unit is not 1, 2, or 3
+//      by printing the array unit; the user inputs original.unit, and validates input
 
 void listPrint(int numUnits, const char unit[][10][20], int& finalUnit, int unitType);
 //Preconditions: the unit names are already stored in the array unit,
 //      and the user inputted typeUnit, in this function, typeUnit-1 is the first index 
 //      in the array, and numTypes is the size of the second index of the array
 //Postconditions: shows options for final.unit based on typeUnit
-//      by printing the array unit; the user inputs 1, 2, or 3 for final.unit,
-//      or the program says "Invalid input" if final.unit is not 1, 2, or 3
+//      by printing the array unit; the user inputs final.unit, and validates input
 
 void getConfirmation(char& confirmation);
 //Preconditions: program asks if the unit statement is correct
@@ -160,7 +159,7 @@ int main()
         askAgain(again);//asks if user wants to convert another input
     }
     while ((getAgain(again) == 'Y') || (getAgain(again) == 'y'));
-    // This loops back to line 122 to completely restart the program.
+    // This loops back to line 121 to completely restart the program.
 
     inStream.close();
     outStream.close();
